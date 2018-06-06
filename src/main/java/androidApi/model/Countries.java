@@ -1,9 +1,9 @@
 package androidApi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Countries {
@@ -13,6 +13,18 @@ public class Countries {
     private int country_id;
     private String country_code;
     private String country_name;
+
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Cities> cities;
+
+    public List<Cities> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<Cities> cities) {
+        this.cities = cities;
+    }
 
     public int getCountry_id() {
         return country_id;

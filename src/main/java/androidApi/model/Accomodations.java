@@ -1,9 +1,8 @@
 package androidApi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
 public class Accomodations {
@@ -12,11 +11,52 @@ public class Accomodations {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accomodation_id;
     private String accomodation_name;
-    private int city_id;
     private double latitude;
     private double longitude;
     private double rating;
     private int star_number;
+
+    public Cities getAcc_city() {
+        return city;
+    }
+
+    public void setAcc_city(Cities city) {
+        this.city = city;
+    }
+
+    @ManyToOne
+    @JsonIgnore
+    private Cities city;
+
+    @ManyToOne
+    private Reservations_accomodations racc;
+
+    @ManyToOne
+    private Roomtypes roomType;
+
+    public Cities getCity() {
+        return city;
+    }
+
+    public void setCity(Cities city) {
+        this.city = city;
+    }
+
+//    public List<Reservations_accomodations> getRacc() {
+//        return racc;
+//    }
+//
+//    public void setRacc(List<Reservations_accomodations> racc) {
+//        this.racc = racc;
+//    }
+
+    public Roomtypes getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(Roomtypes roomType) {
+        this.roomType = roomType;
+    }
 
     public int getAccomodation_id() {
         return accomodation_id;
@@ -32,14 +72,6 @@ public class Accomodations {
 
     public void setAccomodation_name(String accomodation_name) {
         this.accomodation_name = accomodation_name;
-    }
-
-    public int getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
     }
 
     public double getLatitude() {

@@ -1,10 +1,5 @@
 package androidApi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import androidApi.model.Role;
-import androidApi.model.User;
 import androidApi.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

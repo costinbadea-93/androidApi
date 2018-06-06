@@ -1,19 +1,20 @@
 package androidApi.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.sql.Time;
 
 @Entity
 public class Flights {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String flight_id;
-    private int departure_city_id;
     private String getDeparture_airport_code;
-    private int arrival_city_id;
     private String arrival_airport_code;
     private Time departure_time;
     private Time arrival_time;
@@ -23,6 +24,27 @@ public class Flights {
     private int seats_business;
     private double price_business;
 
+    public Cities getArrival_city_id() {
+        return arrival_city_id;
+    }
+
+    public void setArrival_city_id(Cities arrival_city_id) {
+        this.arrival_city_id = arrival_city_id;
+    }
+
+    public Cities getDeparture_city_id() {
+        return departure_city_id;
+    }
+
+    public void setDeparture_city_id(Cities departure_city_id) {
+        this.departure_city_id = departure_city_id;
+    }
+
+    @ManyToOne
+    private Cities arrival_city_id;
+    @ManyToOne
+    private Cities departure_city_id;
+
     public String getFlight_id() {
         return flight_id;
     }
@@ -31,28 +53,12 @@ public class Flights {
         this.flight_id = flight_id;
     }
 
-    public int getDeparture_city_id() {
-        return departure_city_id;
-    }
-
-    public void setDeparture_city_id(int departure_city_id) {
-        this.departure_city_id = departure_city_id;
-    }
-
     public String getGetDeparture_airport_code() {
         return getDeparture_airport_code;
     }
 
     public void setGetDeparture_airport_code(String getDeparture_airport_code) {
         this.getDeparture_airport_code = getDeparture_airport_code;
-    }
-
-    public int getArrival_city_id() {
-        return arrival_city_id;
-    }
-
-    public void setArrival_city_id(int arrival_city_id) {
-        this.arrival_city_id = arrival_city_id;
     }
 
     public String getArrival_airport_code() {

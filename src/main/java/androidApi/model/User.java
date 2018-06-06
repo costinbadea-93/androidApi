@@ -1,9 +1,8 @@
 package androidApi.model;
 
-import java.util.List;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class User {
@@ -24,6 +23,9 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   List<Role> roles;
+
+  @ManyToOne
+  private Reservations_accomodations racu;
 
 
   public Integer getId() {

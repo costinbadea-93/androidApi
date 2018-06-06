@@ -1,9 +1,7 @@
 package androidApi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Roomtypes {
@@ -17,7 +15,17 @@ public class Roomtypes {
     private int fridge;
     private int balcony;
     private int internet_cable;
-    private int accomodation_id;
+
+    public List<Accomodations> getRoomsType() {
+        return roomsType;
+    }
+
+    public void setRoomsType(List<Accomodations> roomsType) {
+        this.roomsType = roomsType;
+    }
+
+    @OneToMany
+    private List<Accomodations> roomsType;
 
     public int getRoom_id() {
         return room_id;
@@ -83,11 +91,4 @@ public class Roomtypes {
         this.internet_cable = internet_cable;
     }
 
-    public int getAccomodation_id() {
-        return accomodation_id;
-    }
-
-    public void setAccomodation_id(int accomodation_id) {
-        this.accomodation_id = accomodation_id;
-    }
 }

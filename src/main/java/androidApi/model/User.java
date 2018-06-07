@@ -24,9 +24,27 @@ public class User {
   @ElementCollection(fetch = FetchType.EAGER)
   List<Role> roles;
 
-  @ManyToOne
-  private Reservations_accomodations racu;
+  @OneToMany(mappedBy = "user")
+  private List<Reservations_accomodations> ressAccs;
 
+  @OneToMany(mappedBy = "user")
+  private List<Reservations_flights> ressFligh;
+
+  public List<Reservations_accomodations> getRessAccs() {
+    return ressAccs;
+  }
+
+  public void setRessAccs(List<Reservations_accomodations> ressAccs) {
+    this.ressAccs = ressAccs;
+  }
+
+  public List<Reservations_flights> getRessFligh() {
+    return ressFligh;
+  }
+
+  public void setRessFligh(List<Reservations_flights> ressFligh) {
+    this.ressFligh = ressFligh;
+  }
 
   public Integer getId() {
     return id;

@@ -2,11 +2,9 @@ package androidApi.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 public class Flights {
@@ -24,6 +22,22 @@ public class Flights {
     private int seats_business;
     private double price_business;
 
+    @ManyToOne
+    private Cities arrival_city_id;
+    @ManyToOne
+    private Cities departure_city_id;
+
+    @OneToMany(mappedBy = "flight")
+    private List<Reservations_flights> rezFligh;
+
+    public List<Reservations_flights> getRezFligh() {
+        return rezFligh;
+    }
+
+    public void setRezFligh(List<Reservations_flights> rezFligh) {
+        this.rezFligh = rezFligh;
+    }
+
     public Cities getArrival_city_id() {
         return arrival_city_id;
     }
@@ -40,10 +54,6 @@ public class Flights {
         this.departure_city_id = departure_city_id;
     }
 
-    @ManyToOne
-    private Cities arrival_city_id;
-    @ManyToOne
-    private Cities departure_city_id;
 
     public String getFlight_id() {
         return flight_id;

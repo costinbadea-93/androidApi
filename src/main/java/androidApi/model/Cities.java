@@ -47,7 +47,32 @@ public class Cities {
     @JsonIgnore
     private List<Flights> departure_flights;
 
+    @OneToMany(mappedBy = "city")
+    private List<Wishes> wishes;
 
+    public List<Flights> getArrival_fligths() {
+        return arrival_fligths;
+    }
+
+    public void setArrival_fligths(List<Flights> arrival_fligths) {
+        this.arrival_fligths = arrival_fligths;
+    }
+
+    public List<Flights> getDeparture_flights() {
+        return departure_flights;
+    }
+
+    public void setDeparture_flights(List<Flights> departure_flights) {
+        this.departure_flights = departure_flights;
+    }
+
+    public List<Wishes> getWishes() {
+        return wishes;
+    }
+
+    public void setWishes(List<Wishes> wishes) {
+        this.wishes = wishes;
+    }
 
     public int getCity_id() {
         return city_id;

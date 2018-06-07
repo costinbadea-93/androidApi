@@ -14,11 +14,11 @@ public class Reservations_accomodations {
     private String roomtype;
     private int no_of_rooms;
 
-    @OneToMany(mappedBy = "racc")
-    private List<Accomodations> accomodation;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Accomodations accomodation;
 
-    @OneToMany(mappedBy = "racu")
-    private List<User> users;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
 //
 //    public User getUsers() {
 //        return users;

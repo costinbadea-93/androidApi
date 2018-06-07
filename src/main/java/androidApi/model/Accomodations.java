@@ -3,6 +3,7 @@ package androidApi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Accomodations {
@@ -28,8 +29,8 @@ public class Accomodations {
     @JsonIgnore
     private Cities city;
 
-    @ManyToOne
-    private Reservations_accomodations racc;
+    @OneToMany(mappedBy = "accomodation")
+    private List<Reservations_accomodations> rezAccs;
 
     @ManyToOne
     private Roomtypes roomType;

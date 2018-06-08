@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
 
 public class idParser {
     public static void main(String [] args) {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("C:\\Users\\Costin Badea\\Desktop\\Api Android\\androidApi\\src\\main\\java\\androidApi\\ex.txt"));
+            br = new BufferedReader(new FileReader("C:\\Users\\cbadea\\Desktop\\androidApi\\androidApi\\src\\main\\java\\androidApi\\ex.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -23,8 +22,16 @@ public class idParser {
                 e.printStackTrace();
             }
             while (line != null) {
+                System.out.println(line);
+                System.out.println("==============");
+                if(line.equals("),")) {
+                    System.out.println(line);
+                }
+               // line.replace("\\),",","+ new randomGenerator().random() +"),");
                 sb.append(line);
                 sb.append(System.lineSeparator());
+
+
                 try {
                     line = br.readLine();
                 } catch (IOException e) {
@@ -32,7 +39,9 @@ public class idParser {
                 }
             }
             String everything = sb.toString();
-            System.out.println( everything.replaceAll("\\),",","+ 24 +"),"));
+         //   System.out.println( everything);
+
+
         } finally {
             try {
                 br.close();
@@ -40,15 +49,5 @@ public class idParser {
                 e.printStackTrace();
             }
         }
-    }
-
-    private static int getRandomNumberInRange(int min, int max) {
-
-        if (min >= max) {
-            throw new IllegalArgumentException("max must be greater than min");
-        }
-
-        Random r = new Random();
-        return r.nextInt((max - min) + 1) + min;
     }
 }

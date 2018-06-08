@@ -1,1 +1,48 @@
-INSERT INTO `wishes` VALUES (1,'History',197),(2,'History',319),(3,'History',323),(4,'History',320),(5,'Nightlife & Party',197),(6,'Nightlife & Party',327),(7,'Nightlife & Party',368),(8,'Nightlife & Party',370),(9,'Nightlife & Party',340),(10,'History',131),(11,'History',358),(12,'History',102),(13,'Art & Culture',102),(14,'Art & Culture',248),(15,'Art & Culture',344),(16,'Art & Culture',223),(17,'History',86),(18,'Art & Culture',86),(19,'Shopping',359),(20,'Shopping',174),(21,'Shopping',392),(22,'Art & Culture',198),(23,'Art & Culture',42),(24,'Festivals',331),(25,'Honeymoon & Romance',373),(26,'Beaches',374),(27,'Art & Culture',49),(28,'Shopping',49),(29,'Wine',375),(30,'Beaches',263),(31,'Aurora borealis',101),(32,'Aurora borealis',123),(33,'Gardens',376),(34,'Safari',377),(35,'History',92),(36,'Honeymoon & Romance',162),(37,'Safari',194),(38,'\"Beaches',347),(39,'Dance',369),(40,'Dance',370),(41,'Wine',71),(42,'Wine',375),(43,'Shopping',365),(44,'Wine',380),(45,'History',367),(46,'History',381),(47,'Honeymoon & Romance',340),(48,'Shopping',382),(49,'Dance',83),(50,'Dance',38),(51,'Dance',248),(52,'Group Travel',299),(53,'Group Travel',362),(54,'Group Travel',325),(55,'Group Travel',384),(56,'Group Travel',86),(57,'Group Travel',223),(58,'Luxury',371),(59,'Luxury',368),(60,'Luxury',357),(61,'Luxury',248),(62,'Luxury',382),(63,'Luxury',359),(64,'Luxury',42),(65,'Luxury',365),(66,'Luxury',102),(67,'Luxury',358),(68,'Shopping',327),(69,'Shopping',122),(70,'Shopping',194),(71,'Shopping',183),(72,'Shopping',174),(73,'Shopping',107),(74,'Fashion',140),(75,'Fashion',174),(76,'Fashion',198),(77,'Fashion',365),(78,'Fashion',359),(79,'Fashion',107),(80,'Fashion',229),(81,'Fashion',366),(82,'Fashion',87),(83,'Fashion',248),(84,'Fashion',133),(85,'Wine',373),(86,'High-tech',367),(87,'High-tech',344),(88,'High-tech',87),(89,'High-tech',385),(90,'High-tech',107),(91,'High-tech',348),(92,'High-tech',72),(93,'High-tech',174),(94,'High-tech',229),(95,'High-tech',133),(96,'High-tech',381),(97,'High-tech',215),(98,'High-tech',232),(99,'High-tech',140),(100,'High-tech',366),(101,'High-tech',248),(102,'High-tech',365),(103,'Gardens',367),(104,'Art & Culture',348),(105,'Food & Drink',348),(106,'Art & Culture',235),(107,'History',235),(108,'Art & Culture',140),(109,'Art & Culture',215),(110,'Food & Drink',215),(111,'Art & Culture',133),(112,'Food & Drink',133),(113,'Fountains',344),(114,'Fountains',386),(115,'Fountains',371),(116,'Fountains',223),(117,'Fountains',387),(118,'Gardens',303),(119,'Bridges',248),(120,'Bridges',380),(121,'Bridges',358),(122,'Bridges',375),(123,'Bridges',122),(124,'Bridges',357),(125,'Bridges',194),(126,'Abandoned Places',107),(127,'Abandoned Places',392),(128,'Parks',102),(129,'Parks',223),(130,'Parks',248),(131,'Parks',82),(132,'Parks',131),(133,'Parks',107),(134,'Parks',325),(135,'Parks',375),(136,'Parks',72),(137,'Parks',122),(138,'Parks',49),(139,'Parks',174),(140,'Parks',359),(141,'Landscapes',388),(142,'Landscapes',370),(143,'Dolphins & Whales',389),(144,'Dolphins & Whales',347),(145,'Pools',71),(146,'Pools',375),(147,'Pools',49),(148,'Pools',102),(149,'Pools',344),(150,'Pools',110),(151,'Cruises',389),(152,'Cruises',362),(153,'Cruises',110),(154,'Cruises',344),(155,'Cruises',194),(156,'Cruises',387),(157,'Cruises',263),(158,'Cruises',131),(159,'Cruises',373),(160,'Thermal',122);
+INSERT INTO `cities`
+VALUES
+  (
+    23, 'Port-aux-Français', 'TF',-49.35,
+    70.216667
+  ),
+  (
+    24, 'Jerusalem', 'PS', 31.76666667,
+    35.233333
+  ),
+  (
+    26, 'Yaren', 'NR',-0.5477, 166.920867
+  ),
+  (
+    28, 'Atafu', 'TK',-9.166667,-171.833333
+  ),
+  (
+    29, 'El-Aaiún', 'EH', 27.153611,-13.203333
+  ),
+  (
+    30, 'Kabul', 'AF', 34.51666667, 69.183333
+  ),
+  (
+    31, 'Tirana', 'AL', 41.31666667, 19.816667
+  ),
+  (32, 'Algiers', 'DZ', 36.75, 3.05),
+  (
+    34, 'Andorra la Vella', 'AD', 42.5,
+    1.516667
+  ),
+  (
+    35, 'Luanda', 'AO',-8.833333333, 13.216667
+  ),
+  (
+    36, 'The Valley', 'AI', 18.21666667,
+    -63.05
+  ),
+  (
+    37, 'Saint Johns', 'AG', 17.11666667,
+    -61.85
+  ),
+  (
+    38, 'Buenos Aires', 'AR',-34.58333333,
+    -58.666667
+  ),
+  (
+    39, 'Yerevan', 'AM', 40.16666667, 44.5
+  )

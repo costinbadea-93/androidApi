@@ -32,7 +32,7 @@ public class idParser {
                 }
             }
             String everything = sb.toString();
-            System.out.println( everything.replaceAll("\\),",","+ getRandomNumberInRange(1,248) +"),"));
+            System.out.println( everything.replaceAll("\\),",","+ 24 +"),"));
         } finally {
             try {
                 br.close();

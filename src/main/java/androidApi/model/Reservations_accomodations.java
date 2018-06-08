@@ -1,5 +1,7 @@
 package androidApi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.List;
@@ -14,9 +16,11 @@ public class Reservations_accomodations {
     private String roomtype;
     private int no_of_rooms;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private Accomodations accomodation;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 //

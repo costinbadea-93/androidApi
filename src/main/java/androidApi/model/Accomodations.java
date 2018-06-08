@@ -17,7 +17,6 @@ public class Accomodations {
     private double rating;
     private int star_number;
 
-    @JsonIgnore
     public Cities getAcc_city() {
         return city;
     }
@@ -26,19 +25,16 @@ public class Accomodations {
         this.city = city;
     }
 
-    @JsonIgnore
     @ManyToOne
     private Cities city;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "accomodation")
     private List<Reservations_accomodations> rezAccs;
 
-    @JsonIgnore
     @ManyToOne
     private Roomtypes roomType;
 
-    @JsonIgnore
     public Cities getCity() {
         return city;
     }
@@ -54,7 +50,6 @@ public class Accomodations {
 //    public void setRacc(List<Reservations_accomodations> racc) {
 //        this.racc = racc;
 //    }
-    @JsonIgnore
     public Roomtypes getRoomType() {
         return roomType;
     }

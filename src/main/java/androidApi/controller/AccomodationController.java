@@ -28,7 +28,7 @@ public class AccomodationController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public List<Accomodations> getAllAccomodations() {
+    public List<?> getAllAccomodations() {
         return accomodationService.getAccomodations();
 
     }

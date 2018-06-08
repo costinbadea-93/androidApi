@@ -1,5 +1,6 @@
 package androidApi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -22,8 +23,10 @@ public class Flights {
     private int seats_business;
     private double price_business;
 
+    @JsonIgnore
     @ManyToOne
     private Cities arrival_city_id;
+    @JsonIgnore
     @ManyToOne
     private Cities departure_city_id;
 

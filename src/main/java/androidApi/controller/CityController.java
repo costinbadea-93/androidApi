@@ -40,10 +40,8 @@ public class CityController {
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public List<Wishes> getWishesByCountry(@RequestParam String countryName,
-                                           @RequestParam String destination,
-                                           @RequestParam int nrAdulti,
-                                           @RequestParam int nrCopii) {
-        return cityService.getWishesByCountry(countryName, destination, nrAdulti, nrCopii);
+                                           @RequestParam int priece) {
+        return cityService.getWishesByCountry(countryName, priece);
     }
 }
 

@@ -44,6 +44,7 @@ public class UserController {
   public String login(//
       @ApiParam("Username") @RequestParam String username, //
       @ApiParam("Password") @RequestParam String password) {
+        System.out.println(username+" "+password);
     return userService.signin(username, password);
   }
 

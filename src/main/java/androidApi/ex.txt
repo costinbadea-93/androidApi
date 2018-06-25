@@ -1,48 +1,73 @@
-INSERT INTO `cities`
-VALUES
-  (
-    23, 'Port-aux-Français', 'TF',-49.35,
-    70.216667
-  ),
-  (
-    24, 'Jerusalem', 'PS', 31.76666667,
-    35.233333
-  ),
-  (
-    26, 'Yaren', 'NR',-0.5477, 166.920867
-  ),
-  (
-    28, 'Atafu', 'TK',-9.166667,-171.833333
-  ),
-  (
-    29, 'El-Aaiún', 'EH', 27.153611,-13.203333
-  ),
-  (
-    30, 'Kabul', 'AF', 34.51666667, 69.183333
-  ),
-  (
-    31, 'Tirana', 'AL', 41.31666667, 19.816667
-  ),
-  (32, 'Algiers', 'DZ', 36.75, 3.05),
-  (
-    34, 'Andorra la Vella', 'AD', 42.5,
-    1.516667
-  ),
-  (
-    35, 'Luanda', 'AO',-8.833333333, 13.216667
-  ),
-  (
-    36, 'The Valley', 'AI', 18.21666667,
-    -63.05
-  ),
-  (
-    37, 'Saint Johns', 'AG', 17.11666667,
-    -61.85
-  ),
-  (
-    38, 'Buenos Aires', 'AR',-34.58333333,
-    -58.666667
-  ),
-  (
-    39, 'Yerevan', 'AM', 40.16666667, 44.5
-  )
+INSERT INTO `wishes`
+VALUES      (1,
+             'History',
+             197),
+            (2,
+             'History',
+             319),
+            (3,
+             'History',
+             323),
+            (4,
+             'History',
+             320),
+            (5,
+             'Nightlife & Party',
+             197),
+            (6,
+             'Nightlife & Party',
+             327),
+            (7,
+             'Nightlife & Party',
+             368),
+            (8,
+             'Nightlife & Party',
+             370),
+            (9,
+             'Nightlife & Party',
+             340),
+            (10,
+             'History',
+             131),
+            (11,
+             'History',
+             358),
+            (12,
+             'History',
+             102),
+            (13,
+             'Art & Culture',
+             102),
+            (14,
+             'Art & Culture',
+             248),
+            (15,
+             'Art & Culture',
+             344),
+            (16,
+             'Art & Culture',
+             223),
+            (17,
+             'History',
+             86),
+            (18,
+             'Art & Culture',
+             86),
+            (19,
+             'Shopping',
+             359),
+            (20,
+             'Shopping',
+             174),
+            (21,
+             'Shopping',
+             392),
+            (22,
+             'Art & Culture',
+             198),
+            (23,
+             'Art & Culture',
+             42),
+            (24,
+             'Festivals',
+             331)

@@ -9,7 +9,7 @@ public class idParser {
     public static void main(String [] args) {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("C:\\Users\\cbadea\\Desktop\\androidApi\\androidApi\\src\\main\\java\\androidApi\\ex.txt"));
+            br = new BufferedReader(new FileReader("C:\\Users\\Costin Badea\\Desktop\\Api Android\\androidApi\\src\\main\\java\\androidApi\\ex.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -22,13 +22,14 @@ public class idParser {
                 e.printStackTrace();
             }
             while (line != null) {
-                System.out.println(line);
-                System.out.println("==============");
-                if(line.equals("),")) {
-                    System.out.println(line);
+                if(line.contains("),") || line.contains(")")) {
+                    System.out.println(line.replace("),",","+ new randomGenerator().random(1,30) +"),"));
+                    //replace for cities
+                    //line.replace("),",","+ new randomGenerator().random(1,30) +"),");
+                    //replace for wishes
+                    line.replace("),",","+ new randomGenerator().random(23,38) +"),");
                 }
-               // line.replace("\\),",","+ new randomGenerator().random() +"),");
-                sb.append(line);
+                sb.append(line.replace("),",","+ new randomGenerator().random(23,38) +"),"));
                 sb.append(System.lineSeparator());
 
 
@@ -39,7 +40,7 @@ public class idParser {
                 }
             }
             String everything = sb.toString();
-         //   System.out.println( everything);
+            System.out.println( everything);
 
 
         } finally {

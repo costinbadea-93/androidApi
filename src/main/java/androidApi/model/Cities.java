@@ -35,18 +35,18 @@ public class Cities {
         this.country = country;
     }
 
+
+
     @ManyToOne
-    @JsonIgnore
     private Countries country;
 
     @OneToMany(mappedBy = "arrival_city_id", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Flights> arrival_fligths;
 
     @OneToMany(mappedBy = "departure_city_id", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Flights> departure_flights;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<Wishes> wishes;
 

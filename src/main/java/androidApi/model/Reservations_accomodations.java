@@ -23,22 +23,6 @@ public class Reservations_accomodations {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-//
-//    public User getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(User users) {
-//        this.users = users;
-//    }
-//
-//    public Accomodations getAccomodationses() {
-//        return accomodation;
-//    }
-//
-//    public void setAccomodationses(Accomodations accomodation) {
-//        this.accomodation = accomodation;
-//    }
 
     public int getAccomodation_reservation_id() {
         return accomodation_reservation_id;

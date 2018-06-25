@@ -2,30 +2,27 @@ package androidApi.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import androidApi.dto.UserResponseDTO;
-import androidApi.model.User;
-import androidApi.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import androidApi.dto.UserResponseDTO;
+import androidApi.model.User;
+import androidApi.service.UserService;
+import springfox.documentation.spring.web.json.Json;
 
-
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/users")
 @Api(tags = "users")
 public class UserController {
@@ -36,16 +33,21 @@ public class UserController {
   @Autowired
   private ModelMapper modelMapper;
 
-  @PostMapping("/signin")
+  private ObjectMapper mapper =  new ObjectMapper();
+
+  @PostMapping(value = "/signin", produces = "application/json")
   @ApiOperation(value = "${UserController.signin}")
   @ApiResponses(value = {//
       @ApiResponse(code = 400, message = "Something went wrong"), //
       @ApiResponse(code = 422, message = "Invalid username/password supplied")})
-  public String login(//
+  public ObjectNode login(//
       @ApiParam("Username") @RequestParam String username, //
       @ApiParam("Password") @RequestParam String password) {
-        System.out.println(username+" "+password);
-    return userService.signin(username, password);
+
+    System.out.println(username+ "" +password);
+    ObjectNode accessToken = mapper.createObjectNode();
+    accessToken.put("value", userService.signin(username, password));
+    return accessToken;
   }
 
   @PostMapping("/signup")

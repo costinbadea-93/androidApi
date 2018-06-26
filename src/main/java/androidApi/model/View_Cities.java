@@ -1,15 +1,11 @@
 package androidApi.model;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name="v_cities")
 public class View_Cities {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name="city_name")
@@ -18,9 +14,10 @@ public class View_Cities {
     @Column(name="country_code")
     private String country_code;
 
+
     public View_Cities(String city_name, String country_code) {
         this.city_name =  city_name;
-        country_code = country_code;
+        this.country_code = country_code;
     }
 
     public String getCity_name() {

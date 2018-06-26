@@ -2,16 +2,18 @@ package androidApi.controller;
 
 
 import androidApi.dto.FullReservationDTO;
-import androidApi.dto.UserResponseDTO;
-import androidApi.model.*;
-import androidApi.service.AccomodationService;
+import androidApi.model.Cities;
+import androidApi.model.View_Cities;
+import androidApi.model.Wishes;
 import androidApi.service.CityService;
 import androidApi.service.Views_service;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController

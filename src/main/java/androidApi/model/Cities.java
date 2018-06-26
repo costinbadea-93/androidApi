@@ -15,26 +15,11 @@ public class Cities {
     private double latitude;
     private double longitude;
 
-    public List<Accomodations> getAccomodations() {
-        return accomodations;
-    }
 
-    public void setAccomodations(List<Accomodations> accomodations) {
-        this.accomodations = accomodations;
-    }
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Accomodations> accomodations;
-
-    public Countries getCountry() {
-        return country;
-    }
-
-    public void setCountry(Countries country) {
-        this.country = country;
-    }
-
 
 
     @ManyToOne
@@ -112,5 +97,21 @@ public class Cities {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Countries getCountry() {
+        return country;
+    }
+
+    public void setCountry(Countries country) {
+        this.country = country;
+    }
+
+    public List<Accomodations> getAccomodations() {
+        return accomodations;
+    }
+
+    public void setAccomodations(List<Accomodations> accomodations) {
+        this.accomodations = accomodations;
     }
 }

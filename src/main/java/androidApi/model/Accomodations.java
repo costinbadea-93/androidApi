@@ -32,8 +32,24 @@ public class Accomodations {
     @OneToMany(mappedBy = "accomodation")
     private List<Reservations_accomodations> rezAccs;
 
-    @ManyToOne
-    private Roomtypes roomType;
+    @OneToMany(mappedBy = "accomodation")
+    private List<Roomtypes> roomType;
+
+    public List<Reservations_accomodations> getRezAccs() {
+        return rezAccs;
+    }
+
+    public void setRezAccs(List<Reservations_accomodations> rezAccs) {
+        this.rezAccs = rezAccs;
+    }
+
+    public List<Roomtypes> getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(List<Roomtypes> roomType) {
+        this.roomType = roomType;
+    }
 
     public Cities getCity() {
         return city;
@@ -50,13 +66,13 @@ public class Accomodations {
 //    public void setRacc(List<Reservations_accomodations> racc) {
 //        this.racc = racc;
 //    }
-    public Roomtypes getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(Roomtypes roomType) {
-        this.roomType = roomType;
-    }
+//    public Roomtypes getRoomType() {
+//        return roomType;
+//    }
+//
+//    public void setRoomType(Roomtypes roomType) {
+//        this.roomType = roomType;
+//    }
 
     public int getAccomodation_id() {
         return accomodation_id;

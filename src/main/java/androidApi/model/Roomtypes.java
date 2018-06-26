@@ -18,17 +18,25 @@ public class Roomtypes {
     private int balcony;
     private int internet_cable;
 
-    public List<Accomodations> getRoomsType() {
-        return roomsType;
+//    public List<Accomodations> getRoomsType() {
+//        return roomsType;
+//    }
+//
+//    public void setRoomsType(List<Accomodations> roomsType) {
+//        this.roomsType = roomsType;
+//    }
+
+    public Accomodations getAccomodations() {
+        return accomodation;
     }
 
-    public void setRoomsType(List<Accomodations> roomsType) {
-        this.roomsType = roomsType;
+    public void setAccomodation(Accomodations accomodation) {
+        this.accomodation = accomodation;
     }
 
     @JsonIgnore
-    @OneToMany
-    private List<Accomodations> roomsType;
+    @ManyToOne
+    private Accomodations accomodation;
 
     public int getRoom_id() {
         return room_id;

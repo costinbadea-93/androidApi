@@ -9,7 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,7 +99,10 @@ public class CityService {
     }
 
     private Reservations_accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String BeginDate, String EndDate, double budget, String roomType) {
-        //GET ArrivalCountry
+
+        BeginDate = "22/08/2018";
+        EndDate = "26/08/2018";
+
         Countries countries = countriesRepository.getCountryId(ArrivalCountry);
         int currentCountryId = countries.getCountry_id();
 
@@ -105,14 +115,33 @@ public class CityService {
         List<Reservations_accomodations> reservations_accomodations = reservationAccomodationRepository.findAll().stream()
                 .filter(e -> checkAccomodationsElementInList(accomodations, e)).collect(Collectors.toList());
 
-        List<Roomtypes> roomtypes = roomtypesRepository.findAll().stream()
-                .filter(e -> checkRoomTypesElementInList(accomodations, e)).collect(Collectors.toList());
-
         //TODO : ADD BUDGET LOGIC
+        LocalDate fromBeginDate = toLocaleDate(BeginDate);
+        LocalDate fromEndDate = toLocaleDate(EndDate);
+        List<Accomodations> relevantAccomodations = accomodationRepository.getViewData();
+        List<Accomodations> returnedToViewRelevantAccomodations =  new ArrayList<>();
 
+        for( Accomodations acc : relevantAccomodations){
+            List<Roomtypes> filteredByRoomType = acc.getRoomType().stream()
+                    .filter(e -> e.getType() == roomType).collect(Collectors.toList());
+            List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
 
+            int initalSumCount = 0;
+            for (Reservations_accomodations rez: rezAcc) {
+                if(rez.getBegin_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth() > toLocaleDate(BeginDate).getDayOfMonth() &&
+                        rez.getBegin_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth() < toLocaleDate(EndDate).getDayOfMonth()){
+                    initalSumCount += rez.getNo_of_rooms();
+                }
+            }
+
+            if(initalSumCount > rezAcc.get(0).getNo_of_rooms()) {
+                returnedToViewRelevantAccomodations.add(acc);
+            }
+        }
+
+       long numberDays =  fromBeginDate.getDayOfMonth() > fromEndDate.getDayOfMonth() ? fromBeginDate.getDayOfMonth() - fromEndDate.getDayOfMonth() : fromEndDate.getDayOfMonth() - fromBeginDate.getDayOfMonth();
+       List<Roomtypes> mostRelevantRooms =  new ArrayList<>();
         return  null;
-
     }
 
     private boolean checkCitiesElementInList (List<Cities> cities, Accomodations accomodations) {
@@ -133,12 +162,17 @@ public class CityService {
         return false;
     }
 
-    private boolean checkRoomTypesElementInList (List<Accomodations> accomodations, Roomtypes roomtypes) {
-        for(Accomodations a : accomodations) {
-            if (a.getRoomType().getRoom_id() == roomtypes.getRoom_id()){
-                return true;
-            }
+    private LocalDate toLocaleDate(String date){
+        String pattern = "dd/MM/yyyy";
+        try {
+            DateFormat df = new SimpleDateFormat(pattern);
+            Date today = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        return false;
+        // Using Java 8 Date and Time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate;
     }
 }

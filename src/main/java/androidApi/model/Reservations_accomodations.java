@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,8 +12,8 @@ public class Reservations_accomodations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accomodation_reservation_id;
-    private Time begin_time;
-    private Time end_time;
+    private Date begin_time;
+    private Date end_time;
     private String roomtype;
     private int no_of_rooms;
 
@@ -32,7 +33,7 @@ public class Reservations_accomodations {
         this.accomodation_reservation_id = accomodation_reservation_id;
     }
 
-    public Time getBegin_time() {
+    public Date getBegin_time() {
         return begin_time;
     }
 
@@ -40,7 +41,7 @@ public class Reservations_accomodations {
         this.begin_time = begin_time;
     }
 
-    public Time getEnd_time() {
+    public Date getEnd_time() {
         return end_time;
     }
 

@@ -93,12 +93,13 @@ public class CityService {
 
 
     public List<FullReservationDTO> getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
-        Reservations_accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry, BeginDate, EndDate, budget, roomType);
+        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry, BeginDate, EndDate, budget, roomType, numberOfRooms);
 
         return null;
     }
 
-    private Reservations_accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String BeginDate, String EndDate, double budget, String roomType) {
+    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms) {
+
 
         BeginDate = "22/08/2018";
         EndDate = "26/08/2018";
@@ -115,33 +116,58 @@ public class CityService {
         List<Reservations_accomodations> reservations_accomodations = reservationAccomodationRepository.findAll().stream()
                 .filter(e -> checkAccomodationsElementInList(accomodations, e)).collect(Collectors.toList());
 
-        //TODO : ADD BUDGET LOGIC
+        Long dateBegin = parseToDateTime(BeginDate);
+        Long dateTo = parseToDateTime(EndDate);
+
         LocalDate fromBeginDate = toLocaleDate(BeginDate);
         LocalDate fromEndDate = toLocaleDate(EndDate);
+        long numberDays =  fromBeginDate.getDayOfMonth() > fromEndDate.getDayOfMonth() ? fromBeginDate.getDayOfMonth() - fromEndDate.getDayOfMonth() : fromEndDate.getDayOfMonth() - fromBeginDate.getDayOfMonth();
+
         List<Accomodations> relevantAccomodations = accomodationRepository.getViewData();
         List<Accomodations> returnedToViewRelevantAccomodations =  new ArrayList<>();
+        Map<Double,Accomodations> costMap =  new HashMap<>();
 
         for( Accomodations acc : relevantAccomodations){
-            List<Roomtypes> filteredByRoomType = acc.getRoomType().stream()
-                    .filter(e -> e.getType() == roomType).collect(Collectors.toList());
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
+            List<Reservations_accomodations> filteredRa =  new ArrayList<>();
+
+            for (Reservations_accomodations rez: rezAcc) {
+                    if((rez.getBegin_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getBegin_time().getTime() <= dateTo &&
+                            rez.getEnd_time().getTime() >= dateTo) ||
+                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin &&
+                                    rez.getEnd_time().getTime() <= dateTo) ||
+                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateTo) ||(rez.getBegin_time().getTime() >= dateBegin &&
+                            rez.getEnd_time().getTime() <= dateTo) ){
+                        filteredRa.add(rez);
+                    }
+            }
 
             int initalSumCount = 0;
-            for (Reservations_accomodations rez: rezAcc) {
-                if(rez.getBegin_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth() > toLocaleDate(BeginDate).getDayOfMonth() &&
-                        rez.getBegin_time().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfMonth() < toLocaleDate(EndDate).getDayOfMonth()){
-                    initalSumCount += rez.getNo_of_rooms();
+            for (Reservations_accomodations rez: filteredRa) {
+                initalSumCount += rez.getNo_of_rooms();
+            }
+
+           List<Roomtypes> specifiedRoomType =  acc.getRoomType().stream()
+                   .filter(e -> e.getType().equals(roomType)).collect(Collectors.toList());
+            if(initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
+
+                if(filteredRa.size() > 0) {
+                    double cost = numberOfRooms * specifiedRoomType.get(0).getPrice() * numberDays;
+                    if ( budget > cost) {
+                        costMap.put(cost,acc);
+                        returnedToViewRelevantAccomodations.add(acc);
+                    }
                 }
             }
-
-            if(initalSumCount > rezAcc.get(0).getNo_of_rooms()) {
-                returnedToViewRelevantAccomodations.add(acc);
-            }
         }
+        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(costMap.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
+            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+        });
 
-       long numberDays =  fromBeginDate.getDayOfMonth() > fromEndDate.getDayOfMonth() ? fromBeginDate.getDayOfMonth() - fromEndDate.getDayOfMonth() : fromEndDate.getDayOfMonth() - fromBeginDate.getDayOfMonth();
-       List<Roomtypes> mostRelevantRooms =  new ArrayList<>();
-        return  null;
+        // TODO: RETURN DTO OBJECT FROM MINACCOMODATIONCOST
+         return  minAccomodationCost.getValue();
     }
 
     private boolean checkCitiesElementInList (List<Cities> cities, Accomodations accomodations) {
@@ -170,9 +196,18 @@ public class CityService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        // Using Java 8 Date and Time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalDate localDate = LocalDate.parse(date, formatter);
         return localDate;
+    }
+
+    private long parseToDateTime(String date) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return df.parse(date).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }

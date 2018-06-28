@@ -93,28 +93,31 @@ public class CityService {
 
 
     public List<FullReservationDTO> getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
-        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry, BeginDate, EndDate, budget, roomType, numberOfRooms);
+        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms);
 
         return null;
     }
 
-    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms) {
+    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms) {
 
 
         BeginDate = "22/08/2018";
         EndDate = "26/08/2018";
 
-        Countries countries = countriesRepository.getCountryId(ArrivalCountry);
-        int currentCountryId = countries.getCountry_id();
+        Countries departureCountries = countriesRepository.getCountryId(DepartureCountry);
+        int departureCountryId =  departureCountries.getCountry_id();
 
-        List<Cities> cities = cityRepository.findAll().stream()
+        List<Cities> departureCities =  cityRepository.findAll().stream()
+                .filter(e -> e.getCountry().getCountry_id() == departureCountryId).collect(Collectors.toList());
+
+        Countries arrivalCountries = countriesRepository.getCountryId(ArrivalCountry);
+        int currentCountryId = arrivalCountries.getCountry_id();
+
+        List<Cities> arrivalCities = cityRepository.findAll().stream()
                 .filter(e -> e.getCountry().getCountry_id() == currentCountryId).collect(Collectors.toList());
 
         List<Accomodations> accomodations = accomodationRepository.findAll().stream()
-                .filter(e -> checkCitiesElementInList(cities, e)).collect(Collectors.toList());
-
-        List<Reservations_accomodations> reservations_accomodations = reservationAccomodationRepository.findAll().stream()
-                .filter(e -> checkAccomodationsElementInList(accomodations, e)).collect(Collectors.toList());
+                .filter(e -> checkCitiesElementInList(arrivalCities, e)).collect(Collectors.toList());
 
         Long dateBegin = parseToDateTime(BeginDate);
         Long dateTo = parseToDateTime(EndDate);
@@ -129,18 +132,7 @@ public class CityService {
 
         for( Accomodations acc : relevantAccomodations){
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
-            List<Reservations_accomodations> filteredRa =  new ArrayList<>();
-
-            for (Reservations_accomodations rez: rezAcc) {
-                    if((rez.getBegin_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getBegin_time().getTime() <= dateTo &&
-                            rez.getEnd_time().getTime() >= dateTo) ||
-                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin &&
-                                    rez.getEnd_time().getTime() <= dateTo) ||
-                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateTo) ||(rez.getBegin_time().getTime() >= dateBegin &&
-                            rez.getEnd_time().getTime() <= dateTo) ){
-                        filteredRa.add(rez);
-                    }
-            }
+            List<Reservations_accomodations> filteredRa =  buildMostImportantReservationsAccomodations(rezAcc, dateBegin,dateTo);
 
             int initalSumCount = 0;
             for (Reservations_accomodations rez: filteredRa) {
@@ -154,20 +146,57 @@ public class CityService {
                 if(filteredRa.size() > 0) {
                     double cost = numberOfRooms * specifiedRoomType.get(0).getPrice() * numberDays;
                     if ( budget > cost) {
+                        double remainedBudget = budget - cost;
                         costMap.put(cost,acc);
                         returnedToViewRelevantAccomodations.add(acc);
                     }
                 }
             }
+
         }
-        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(costMap.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
-            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
-                return entry1.getKey().compareTo(entry2.getKey());
-            }
-        });
 
         // TODO: RETURN DTO OBJECT FROM MINACCOMODATIONCOST
-         return  minAccomodationCost.getValue();
+        if(returnedToViewRelevantAccomodations.size() > 0) {
+            Accomodations minCostAcc = returnMinimumValueFromMap(costMap);
+            double cost = getMinCost(costMap);
+            double remainedCost = budget - cost;
+            List<Flights> flights =  flightsRepository.findAll();
+            List<Flights> filteredFligths =  getFilterFlightsList(flights, arrivalCities, departureCities);
+            System.out.println("Test");
+
+        }
+
+
+         return  returnMinimumValueFromMap(costMap);
+    }
+    private List<Flights> getFilterFlightsList(List<Flights> flights, List<Cities> arrivalCities,List<Cities> departureCities) {
+        List<Flights> returnedFlightsList =  new ArrayList<>();
+        for(Flights f : flights){
+            for(Cities ca : arrivalCities) {
+                for(Cities dc: departureCities){
+                    if( f.getDeparture_city_id().getCity_id() == dc.getCity_id() &&
+                         f.getArrival_city_id().getCity_id() == ca.getCity_id()) {
+                        returnedFlightsList.add(f);
+                    }
+
+                }
+            }
+        }
+        return returnedFlightsList;
+    }
+    private List<Reservations_accomodations> buildMostImportantReservationsAccomodations(List<Reservations_accomodations> accomodations, long dateBegin, long dateTo){
+        List<Reservations_accomodations> filteredRa = new ArrayList<>();
+                    for (Reservations_accomodations rez: accomodations) {
+                    if((rez.getBegin_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getBegin_time().getTime() <= dateTo &&
+                            rez.getEnd_time().getTime() >= dateTo) ||
+                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin &&
+                                    rez.getEnd_time().getTime() <= dateTo) ||
+                            (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateTo) ||(rez.getBegin_time().getTime() >= dateBegin &&
+                            rez.getEnd_time().getTime() <= dateTo) ){
+                        filteredRa.add(rez);
+                    }
+            }
+            return filteredRa;
     }
 
     private boolean checkCitiesElementInList (List<Cities> cities, Accomodations accomodations) {
@@ -210,4 +239,22 @@ public class CityService {
         }
         return 1;
     }
+    private Accomodations returnMinimumValueFromMap(Map<Double,Accomodations> map) {
+        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
+            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+        });
+        return minAccomodationCost.getValue();
+    }
+
+    private double  getMinCost(Map<Double,Accomodations> map) {
+        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
+            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+        });
+        return minAccomodationCost.getKey();
+    }
+
 }

@@ -13,7 +13,7 @@ public class Flights {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String flight_id;
-    private String getDeparture_airport_code;
+    private String departure_airport_code;
     private String arrival_airport_code;
     private Time departure_time;
     private Time arrival_time;
@@ -22,6 +22,7 @@ public class Flights {
     private int price_economic;
     private int seats_business;
     private double price_business;
+
 
     @JsonIgnore
     @ManyToOne
@@ -57,21 +58,12 @@ public class Flights {
         this.departure_city_id = departure_city_id;
     }
 
-
     public String getFlight_id() {
         return flight_id;
     }
 
     public void setFlight_id(String flight_id) {
         this.flight_id = flight_id;
-    }
-
-    public String getGetDeparture_airport_code() {
-        return getDeparture_airport_code;
-    }
-
-    public void setGetDeparture_airport_code(String getDeparture_airport_code) {
-        this.getDeparture_airport_code = getDeparture_airport_code;
     }
 
     public String getArrival_airport_code() {
@@ -137,4 +129,13 @@ public class Flights {
     public void setPrice_business(double price_business) {
         this.price_business = price_business;
     }
+
+    public String getDeparture_airport_code() {
+        return departure_airport_code;
+    }
+
+    public void setDeparture_airport_code(String departure_airport_code) {
+        this.departure_airport_code = departure_airport_code;
+    }
+
 }

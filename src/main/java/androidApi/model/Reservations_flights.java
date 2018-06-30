@@ -10,6 +10,8 @@ public class Reservations_flights {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int flight_reservation_id;
     private Date flight_date;
+    private int numberOfSeats;
+    private int isBusiness;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Flights flight;
@@ -48,4 +50,21 @@ public class Reservations_flights {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public int getIsBusiness() {
+        return isBusiness;
+    }
+
+    public void setIsBusiness(int isBusiness) {
+        this.isBusiness = isBusiness;
+    }
+
 }

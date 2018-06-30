@@ -93,12 +93,12 @@ public class CityService {
 
 
     public List<FullReservationDTO> getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
-        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms);
+        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms, isBusiness, numberOfSeats);
 
         return null;
     }
 
-    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms) {
+    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms, int isBussiness, int numberOfSeats) {
 
 
         BeginDate = "22/08/2018";
@@ -157,18 +157,65 @@ public class CityService {
 
         // TODO: RETURN DTO OBJECT FROM MINACCOMODATIONCOST
         if(returnedToViewRelevantAccomodations.size() > 0) {
-            Accomodations minCostAcc = returnMinimumValueFromMap(costMap);
+            Accomodations minCostAcc = returnMinimumValueFromMapAcc(costMap);
             double cost = getMinCost(costMap);
             double remainedCost = budget - cost;
             List<Flights> flights =  flightsRepository.findAll();
-            List<Flights> filteredFligths =  getFilterFlightsList(flights, arrivalCities, departureCities);
-            System.out.println("Test");
 
+            List<Flights> filteredFligthsFrom =  getFilterFlightsList(flights, departureCities, arrivalCities);
+            Flights relevantFromFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
+            double remainedCostAfterFlightFrom = remainedCost - getMinCostFlights(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
+
+
+            List<Flights> filteredFligthsTo =  getFilterFlightsList(flights, arrivalCities, departureCities);
+            Flights relevantToFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCost));
         }
 
+        //TODO: CREATE SECOND FLIGHT
 
-         return  returnMinimumValueFromMap(costMap);
+
+
+         return  returnMinimumValueFromMapAcc(costMap);
     }
+
+    private Map<Double,Flights> getMostSignificantFlight(List<Flights> flightsList, int isBusiness, int numberOfSeats, long dateBegin, double remainedCost){
+        List<Flights> availableFlights = new ArrayList<>();
+        Map<Double, Flights> flightsMap = new HashMap<>();
+
+        for(Flights f : flightsList) {
+            //Filter by date and category of seats
+            int numberOfTakenSeats = 0;
+            List<Reservations_flights> flightsReservations = f.getRezFligh().stream()
+                    .filter(e -> e.getFlight_date().getTime() == dateBegin && e.getIsBusiness() == isBusiness)
+                    .collect(Collectors.toList());
+            for(Reservations_flights rf : flightsReservations) {
+                numberOfTakenSeats += rf.getNumberOfSeats();
+            }
+
+            if(isBusiness == 1) {
+                if(f.getSeats_business() - numberOfTakenSeats >= numberOfSeats){
+                    double flightCost = numberOfSeats * f.getPrice_business();
+                    if(flightCost < remainedCost) {
+                        availableFlights.add(f);
+                        flightsMap.put(flightCost, f);
+                    }
+                }
+            }else {
+                //if is economic
+                if(f.getSeats_economic() - numberOfTakenSeats >= numberOfSeats){
+                    double flightCost = numberOfSeats * f.getPrice_economic();
+                    if(flightCost < remainedCost) {
+                        availableFlights.add(f);
+                        flightsMap.put(flightCost, f);
+                    }
+                }
+            }
+
+        }
+        //
+        return flightsMap;
+    }
+
     private List<Flights> getFilterFlightsList(List<Flights> flights, List<Cities> arrivalCities,List<Cities> departureCities) {
         List<Flights> returnedFlightsList =  new ArrayList<>();
         for(Flights f : flights){
@@ -239,9 +286,18 @@ public class CityService {
         }
         return 1;
     }
-    private Accomodations returnMinimumValueFromMap(Map<Double,Accomodations> map) {
+    private Accomodations returnMinimumValueFromMapAcc(Map<Double,Accomodations> map) {
         Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
             public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+        });
+        return minAccomodationCost.getValue();
+    }
+
+    private Flights returnMinimumValueFromMapFlight(Map<Double,Flights> map) {
+        Map.Entry<Double, Flights> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
+            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
                 return entry1.getKey().compareTo(entry2.getKey());
             }
         });
@@ -255,6 +311,15 @@ public class CityService {
             }
         });
         return minAccomodationCost.getKey();
+    }
+
+    private double getMinCostFlights(Map<Double,Flights> map) {
+        Map.Entry<Double, Flights> minFlightsCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
+            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+        });
+        return minFlightsCost.getKey();
     }
 
 }

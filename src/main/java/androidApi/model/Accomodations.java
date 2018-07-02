@@ -25,13 +25,15 @@ public class Accomodations {
         this.city = city;
     }
 
+    @JsonIgnore
     @ManyToOne
     private Cities city;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "accomodation")
     private List<Reservations_accomodations> rezAccs;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "accomodation")
     private List<Roomtypes> roomType;
 

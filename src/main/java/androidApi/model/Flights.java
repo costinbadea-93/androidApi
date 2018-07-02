@@ -27,10 +27,12 @@ public class Flights {
     @JsonIgnore
     @ManyToOne
     private Cities arrival_city_id;
+
     @JsonIgnore
     @ManyToOne
     private Cities departure_city_id;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "flight")
     private List<Reservations_flights> rezFligh;
 

@@ -92,15 +92,14 @@ public class CityService {
 
 
 
-    public List<FullReservationDTO> getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
-        Accomodations reservations_accomodations = getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms, isBusiness, numberOfSeats);
+    public FullReservationDTO getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
+       return getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms, isBusiness, numberOfSeats);
 
-        return null;
     }
 
-    private Accomodations getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms, int isBussiness, int numberOfSeats) {
+    private FullReservationDTO getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms, int isBussiness, int numberOfSeats) {
 
-
+        FullReservationDTO returnedResult = new FullReservationDTO();
         BeginDate = "22/08/2018";
         EndDate = "26/08/2018";
 
@@ -169,13 +168,16 @@ public class CityService {
 
             List<Flights> filteredFligthsTo =  getFilterFlightsList(flights, arrivalCities, departureCities);
             Flights relevantToFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCost));
+            returnedResult.setAccomodations(returnMinimumValueFromMapAcc(costMap));
+            returnedResult.setFlightFrom(relevantFromFlight);
+            returnedResult.setFlightTo(relevantToFlight);
         }
 
         //TODO: CREATE SECOND FLIGHT
 
 
 
-         return  returnMinimumValueFromMapAcc(costMap);
+         return returnedResult;
     }
 
     private Map<Double,Flights> getMostSignificantFlight(List<Flights> flightsList, int isBusiness, int numberOfSeats, long dateBegin, double remainedCost){

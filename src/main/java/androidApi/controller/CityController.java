@@ -53,7 +53,7 @@ public class CityController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public List<FullReservationDTO> getParsedData(
+    public  FullReservationDTO getParsedData(
             @RequestParam String DepartureCountry,
             @RequestParam String ArrivalCountry,
             @RequestParam String BeginDate,

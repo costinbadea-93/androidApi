@@ -15,4 +15,7 @@ public interface CountriesRepository  extends JpaRepository<Countries, Integer> 
 
     @Query("select a from Countries b, Cities a where a.country = b")
     public List<Cities> getViewData();
+
+    @Query("SELECT c FROM Countries AS c WHERE c.country_name = :name")
+    public Countries findByName(@Param("name") String name);
 }

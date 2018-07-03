@@ -6,10 +6,7 @@ import androidApi.model.Accomodations;
 import androidApi.service.AccomodationService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,9 +25,14 @@ public class AccomodationController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public List<?> getAllAccomodations() {
-        return accomodationService.getAccomodations();
-
+    public List<?> getAllAccomodations(
+            @RequestParam String country,
+            @RequestParam String BeginDate,
+            @RequestParam String EndDate,
+            @RequestParam int numberOfRooms,
+            @RequestParam String roomType
+    ) {
+        return accomodationService.getAccomodations(country, BeginDate, EndDate, numberOfRooms, roomType);
     }
 }
 

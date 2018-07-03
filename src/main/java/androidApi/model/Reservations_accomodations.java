@@ -25,6 +25,30 @@ public class Reservations_accomodations {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
+    public void setBegin_time(Date begin_time) {
+        this.begin_time = begin_time;
+    }
+
+    public void setEnd_time(Date end_time) {
+        this.end_time = end_time;
+    }
+
+    public Accomodations getAccomodation() {
+        return accomodation;
+    }
+
+    public void setAccomodation(Accomodations accomodation) {
+        this.accomodation = accomodation;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public int getAccomodation_reservation_id() {
         return accomodation_reservation_id;
     }

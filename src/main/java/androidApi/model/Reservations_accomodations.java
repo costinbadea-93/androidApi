@@ -61,17 +61,11 @@ public class Reservations_accomodations {
         return begin_time;
     }
 
-    public void setBegin_time(Time begin_time) {
-        this.begin_time = begin_time;
-    }
 
     public Date getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Time end_time) {
-        this.end_time = end_time;
-    }
 
     public String getRoomtype() {
         return roomtype;

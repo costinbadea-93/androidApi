@@ -115,6 +115,7 @@ public class CityService {
         List<Cities> arrivalCities = cityRepository.findAll().stream()
                 .filter(e -> e.getCountry().getCountry_id() == currentCountryId).collect(Collectors.toList());
 
+
         List<Accomodations> accomodations = accomodationRepository.findAll().stream()
                 .filter(e -> checkCitiesElementInList(arrivalCities, e)).collect(Collectors.toList());
 
@@ -126,10 +127,20 @@ public class CityService {
         long numberDays =  fromBeginDate.getDayOfMonth() > fromEndDate.getDayOfMonth() ? fromBeginDate.getDayOfMonth() - fromEndDate.getDayOfMonth() : fromEndDate.getDayOfMonth() - fromBeginDate.getDayOfMonth();
 
         List<Accomodations> relevantAccomodations = accomodationRepository.getViewData();
+        List<Accomodations> relevantAccomodationsByCountry =  new ArrayList<>();
+
+        for(Cities c: arrivalCities){
+            for(Accomodations a: relevantAccomodations){
+                if(c.getCity_id()==a.getCity().getCity_id()){
+                    relevantAccomodationsByCountry.add(a);
+                }
+            }
+        }
+
         List<Accomodations> returnedToViewRelevantAccomodations =  new ArrayList<>();
         Map<Double,Accomodations> costMap =  new HashMap<>();
 
-        for( Accomodations acc : relevantAccomodations){
+        for( Accomodations acc : relevantAccomodationsByCountry){
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
             List<Reservations_accomodations> filteredRa =  buildMostImportantReservationsAccomodations(rezAcc, dateBegin,dateTo);
 
@@ -142,14 +153,14 @@ public class CityService {
                    .filter(e -> e.getType().equals(roomType)).collect(Collectors.toList());
             if(initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
 
-                if(filteredRa.size() > 0) {
+//                if(filteredRa.size() > 0) {
                     double cost = numberOfRooms * specifiedRoomType.get(0).getPrice() * numberDays;
                     if ( budget > cost) {
                         double remainedBudget = budget - cost;
                         costMap.put(cost,acc);
                         returnedToViewRelevantAccomodations.add(acc);
                     }
-                }
+//                }
             }
 
         }

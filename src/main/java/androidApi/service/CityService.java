@@ -139,6 +139,7 @@ public class CityService {
 
         List<Accomodations> returnedToViewRelevantAccomodations =  new ArrayList<>();
         Map<Double,Accomodations> costMap =  new HashMap<>();
+        Roomtypes returndRoomtype= null;
 
         for( Accomodations acc : relevantAccomodationsByCountry){
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
@@ -151,6 +152,8 @@ public class CityService {
 
            List<Roomtypes> specifiedRoomType =  acc.getRoomType().stream()
                    .filter(e -> e.getType().equals(roomType)).collect(Collectors.toList());
+           returndRoomtype = specifiedRoomType.get(0);
+
             if(initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
 
 //                if(filteredRa.size() > 0) {
@@ -182,6 +185,7 @@ public class CityService {
             returnedResult.setAccomodations(returnMinimumValueFromMapAcc(costMap));
             returnedResult.setFlightFrom(relevantFromFlight);
             returnedResult.setFlightTo(relevantToFlight);
+            returnedResult.setRoomtypes(returndRoomtype);
         }
 
         //TODO: CREATE SECOND FLIGHT

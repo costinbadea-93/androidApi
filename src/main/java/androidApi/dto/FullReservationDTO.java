@@ -1,14 +1,20 @@
 package androidApi.dto;
 
-import androidApi.model.Accomodations;
-import androidApi.model.Flights;
-import androidApi.model.Reservations_accomodations;
-import androidApi.model.Reservations_flights;
+import androidApi.model.*;
 
 public class FullReservationDTO {
      private Accomodations accomodations;
      private Flights flightFrom;
      private Flights flightTo;
+     private Roomtypes roomtypes;
+
+    public Roomtypes getRoomtypes() {
+        return roomtypes;
+    }
+
+    public void setRoomtypes(Roomtypes roomtypes) {
+        this.roomtypes = roomtypes;
+    }
 
     public Accomodations getAccomodations() {
         return accomodations;

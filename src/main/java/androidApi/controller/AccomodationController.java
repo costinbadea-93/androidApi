@@ -1,11 +1,10 @@
 package androidApi.controller;
 
-
-import androidApi.dto.UserResponseDTO;
+import androidApi.dto.GetReservationsDTO;
 import androidApi.model.Accomodations;
 import androidApi.model.Reservations_accomodations;
 import androidApi.service.AccomodationService;
-import androidApi.service.Reservation_accService;
+import androidApi.service.ReservationService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class AccomodationController {
     AccomodationService accomodationService;
 
     @Autowired
-    Reservation_accService reservation_accService;
+    ReservationService reservationService;
 
     @GetMapping(value = "/getAccomodations")
     @ApiOperation(value = "${AccomodationController.getAll}", response = Accomodations.class)
@@ -51,9 +50,21 @@ public class AccomodationController {
     public ResponseEntity<?> addReservationAccomodation(@RequestBody Reservations_accomodations ressAcc,
                                                         @RequestParam int accId,
                                                         @RequestParam int userId) {
-        //return reservation_accService
-        Reservations_accomodations savedReservation =  reservation_accService.addReservation(ressAcc,accId,userId);
+        Reservations_accomodations savedReservation =  reservationService.addReservation(ressAcc,accId,userId);
         return ResponseEntity.ok().body(savedReservation.getAccomodation_reservation_id());
+    }
+
+    @GetMapping(value = "/getReservations")
+    @ApiOperation(value = "${AccomodationController.getReservationsAccomodation}", response = Reservations_accomodations.class)
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public GetReservationsDTO getReservationsAccomodations(@RequestParam int userId) {
+        GetReservationsDTO reservationsAccomodations =
+                reservationService.getReservationAcc(userId);
+        return reservationsAccomodations;
     }
 
     

@@ -7,6 +7,7 @@ import androidApi.service.AccomodationService;
 import androidApi.service.ReservationService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,14 +41,17 @@ public class AccomodationController {
         return accomodationService.getAccomodations(country, BeginDate, EndDate, numberOfRooms, roomType);
     }
 
-    @PostMapping(value = "/addReservationAccomodation")
+
+    @RequestMapping(value = "/addReservationAccomodation", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "${AccomodationController.addReservationAccomodation}", response = Accomodations.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public ResponseEntity<?> addReservationAccomodation(@RequestBody Reservations_accomodations ressAcc,
+    public ResponseEntity<?> addReservationAccomodation(@ModelAttribute Reservations_accomodations ressAcc,
                                                         @RequestParam int accId,
                                                         @RequestParam int userId) {
         Reservations_accomodations savedReservation =  reservationService.addReservation(ressAcc,accId,userId);

@@ -1,6 +1,7 @@
 package androidApi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -12,8 +13,9 @@ public class Reservations_accomodations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accomodation_reservation_id;
-    private Date begin_time;
-    private Date end_time;
+
+    private String begin_time;
+    private String end_time;
     private String roomtype;
     private int no_of_rooms;
 
@@ -25,11 +27,11 @@ public class Reservations_accomodations {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    public void setBegin_time(Date begin_time) {
+    public void setBegin_time(String begin_time) {
         this.begin_time = begin_time;
     }
 
-    public void setEnd_time(Date end_time) {
+    public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
 
@@ -57,12 +59,12 @@ public class Reservations_accomodations {
         this.accomodation_reservation_id = accomodation_reservation_id;
     }
 
-    public Date getBegin_time() {
+    public String getBegin_time() {
         return begin_time;
     }
 
 
-    public Date getEnd_time() {
+    public String getEnd_time() {
         return end_time;
     }
 

@@ -9,6 +9,7 @@ import androidApi.service.FlightsService;
 import androidApi.service.ReservationService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,15 +37,17 @@ public class FlightsController {
         return flightsService.getFlights();
     }
 
-    @PostMapping(value = "/addFlightReservation")
+    @RequestMapping(value = "/addFlightReservation", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "${FlightsController.addFlightReservation}", response = FlightsController.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public ResponseEntity<?> addReservationFlight(@RequestBody Reservations_flights resFlight,
-                                                        @RequestParam int flightId,
+    public ResponseEntity<?> addReservationFlight(@ModelAttribute Reservations_flights resFlight,
+                                                        @RequestParam String flightId,
                                                         @RequestParam int userId) {
         //return reservation_accService
         Reservations_flights savedReservation =  reservationService.addResFlight(resFlight,flightId,userId);

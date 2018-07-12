@@ -75,12 +75,12 @@ public class AccomodationService {
     private List<Reservations_accomodations> buildMostImportantReservationsAccomodations(List<Reservations_accomodations> accomodations, long dateBegin, long dateTo) {
         List<Reservations_accomodations> filteredRa = new ArrayList<>();
         for (Reservations_accomodations rez : accomodations) {
-            if ((rez.getBegin_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getBegin_time().getTime() <= dateTo &&
-                    rez.getEnd_time().getTime() >= dateTo) ||
-                    (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateBegin && rez.getEnd_time().getTime() >= dateBegin &&
-                            rez.getEnd_time().getTime() <= dateTo) ||
-                    (rez.getBegin_time().getTime() <= dateBegin && rez.getEnd_time().getTime() >= dateTo) || (rez.getBegin_time().getTime() >= dateBegin &&
-                    rez.getEnd_time().getTime() <= dateTo)) {
+            if ((parseToDateTime(rez.getBegin_time()) >= dateBegin && parseToDateTime(rez.getEnd_time()) >= dateBegin && parseToDateTime(rez.getBegin_time()) <= dateTo &&
+                    parseToDateTime(rez.getEnd_time()) >= dateTo) ||
+                    (parseToDateTime(rez.getBegin_time()) <= dateBegin && parseToDateTime(rez.getEnd_time()) >= dateBegin && parseToDateTime(rez.getEnd_time()) >= dateBegin &&
+                            parseToDateTime(rez.getEnd_time()) <= dateTo) ||
+                    (parseToDateTime(rez.getBegin_time()) <= dateBegin && parseToDateTime(rez.getEnd_time()) >= dateTo) || (parseToDateTime(rez.getBegin_time()) >= dateBegin &&
+                    parseToDateTime(rez.getEnd_time()) <= dateTo)) {
                 filteredRa.add(rez);
             }
         }

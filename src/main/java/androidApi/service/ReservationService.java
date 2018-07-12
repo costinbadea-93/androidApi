@@ -8,6 +8,9 @@ import androidApi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,8 +43,8 @@ public class ReservationService{
         return reservationAccomodationRepository.save(reservations_accomodations);
     }
 
-    public Reservations_flights addResFlight(Reservations_flights reservations_flights, int flightId, int userId){
-        Flights flights =  flightsRepository.findOne(flightId);
+    public Reservations_flights addResFlight(Reservations_flights reservations_flights, String flightId, int userId){
+        Flights flights =  flightsRepository.findByName(flightId);
         User user = userRepository.findOne(userId);
 
         reservations_flights.setFlight(flights);
@@ -57,8 +60,8 @@ public class ReservationService{
         List<ItineraryDTO> itineraryDTOSList = new ArrayList<>();
         for (Reservations_accomodations resA: reservationsAcc){
             for (Reservations_flights resF: reservations_flights) {
-                if (resA.getBegin_time().getTime() == resF.getFlight_date().getTime() ||
-                        resA.getBegin_time().getTime() == resF.getFlight_date().getTime()){
+                if (parseToDateTime(resA.getBegin_time()) == parseToDateTime(resF.getFlight_date()) ||
+                        parseToDateTime(resA.getBegin_time()) == parseToDateTime(resF.getFlight_date())){
                     ItineraryDTO itineraryDTO = new ItineraryDTO();
                     itineraryDTO.setReservations_accomodations(resA);
                     itineraryDTO.setReservations_flights(resF);
@@ -71,5 +74,15 @@ public class ReservationService{
         getReservationsDTOS.setItineraryDTOS(itineraryDTOSList);
 
        return getReservationsDTOS;
+    }
+
+    private long parseToDateTime(String date) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return df.parse(date).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }

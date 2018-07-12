@@ -9,7 +9,7 @@ public class Reservations_flights {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int flight_reservation_id;
-    private Date flight_date;
+    private String flight_date;
     private int numberOfSeats;
     private int isBusiness;
 
@@ -27,11 +27,11 @@ public class Reservations_flights {
         this.flight_reservation_id = flight_reservation_id;
     }
 
-    public Date getFlight_date() {
+    public String getFlight_date() {
         return flight_date;
     }
 
-    public void setFlight_date(Date flight_date) {
+    public void setFlight_date(String flight_date) {
         this.flight_date = flight_date;
     }
 

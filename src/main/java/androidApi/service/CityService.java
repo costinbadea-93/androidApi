@@ -403,6 +403,8 @@ public class CityService {
                 return entry1.getKey().compareTo(entry2.getKey());
             }
         });
+        System.out.println("Step 15");
+        System.out.println(minAccomodationCost.getValue());
         return minAccomodationCost.getValue();
     }
 

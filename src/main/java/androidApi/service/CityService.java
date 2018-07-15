@@ -398,6 +398,10 @@ public class CityService {
                 return entry1.getKey().compareTo(entry2.getKey());
             }
         });
+
+        System.out.println("FINDED ERROR");
+        System.out.println(minAccomodationCost.getValue());
+        System.out.println(map);
         return minAccomodationCost.getValue();
     }
 

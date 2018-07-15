@@ -398,37 +398,43 @@ public class CityService {
         return 1;
     }
     private Accomodations returnMinimumValueFromMapAcc(Map<Double,Accomodations> map) {
-        System.out.println("FINDED ERROR");
-        System.out.println(map);
-        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
-            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
-                return entry1.getKey().compareTo(entry2.getKey());
-            }
-        });
-        System.out.println("FINDED ERROR2");
-        System.out.println(minAccomodationCost.getValue());
-
-        return minAccomodationCost.getValue();
+//        System.out.println("FINDED ERROR");
+//        System.out.println(map);
+//        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
+//            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+//                return entry1.getKey().compareTo(entry2.getKey());
+//            }
+//        });
+//        System.out.println("FINDED ERROR2");
+//        System.out.println(minAccomodationCost.getValue());
+        Map<Double,Accomodations> treeMap = new TreeMap<Double, Accomodations>(map);
+        Map.Entry<Double,Accomodations> entry = treeMap.entrySet().iterator().next();
+        return entry.getValue();
     }
 
     private Flights returnMinimumValueFromMapFlight(Map<Double,Flights> map) {
-        Map.Entry<Double, Flights> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
-            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
-                return entry1.getKey().compareTo(entry2.getKey());
-            }
-        });
-        System.out.println("Step 15");
-        System.out.println(minAccomodationCost.getValue());
-        return minAccomodationCost.getValue();
+//        Map.Entry<Double, Flights> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
+//            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
+//                return entry1.getKey().compareTo(entry2.getKey());
+//            }
+//        });
+//        System.out.println("Step 15");
+//        System.out.println(minAccomodationCost.getValue());
+        Map<Double,Flights> treeMap = new TreeMap<Double, Flights>(map);
+        Map.Entry<Double,Flights> entry = treeMap.entrySet().iterator().next();
+        return entry.getValue();
     }
 
     private double  getMinCost(Map<Double,Accomodations> map) {
-        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
-            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
-                return entry1.getKey().compareTo(entry2.getKey());
-            }
-        });
-        return minAccomodationCost.getKey();
+//        Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
+//            public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
+//                return entry1.getKey().compareTo(entry2.getKey());
+//            }
+//        });
+
+        Map<Double,Accomodations> treeMap = new TreeMap<Double, Accomodations>(map);
+        Map.Entry<Double,Accomodations> entry = treeMap.entrySet().iterator().next();
+        return entry.getKey();
     }
 
     private double getMinCostFlights(Map<Double,Flights> map) {
@@ -439,10 +445,9 @@ public class CityService {
 //                return entry1.getKey().compareTo(entry2.getKey());
 //            }
 //        });
+        Map<Double,Flights> treeMap = new TreeMap<Double, Flights>(map);
+        Map.Entry<Double,Flights> entry = treeMap.entrySet().iterator().next();
         System.out.println("Cost min taken");
-        System.out.println(map);
-        Map.Entry<Double,Flights> entry = map.entrySet().iterator().next();
-        System.out.println("take first element");
         System.out.println(entry.getKey());
         return entry.getKey();
     }

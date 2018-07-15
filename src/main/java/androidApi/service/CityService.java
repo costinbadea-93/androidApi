@@ -3,6 +3,8 @@ package androidApi.service;
 import androidApi.dto.FullReservationDTO;
 import androidApi.model.*;
 import androidApi.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CityService {
+    private final Logger logger = LoggerFactory.getLogger(CityService.class);
     @Autowired
     CityRepository cityRepository;
 
@@ -160,6 +163,8 @@ public class CityService {
         long numberDays =  fromBeginDate.getDayOfMonth() > fromEndDate.getDayOfMonth() ? fromBeginDate.getDayOfMonth() - fromEndDate.getDayOfMonth() : fromEndDate.getDayOfMonth() - fromBeginDate.getDayOfMonth();
 
         List<Accomodations> relevantAccomodations = accomodationRepository.getViewData();
+        System.out.println("Step 1");
+        System.out.println(relevantAccomodations);
         List<Accomodations> relevantAccomodationsByCountry =  new ArrayList<>();
 
         for(Cities c: arrivalPassedCities){
@@ -169,7 +174,8 @@ public class CityService {
                 }
             }
         }
-
+        System.out.println("Step 2");
+        System.out.println(relevantAccomodationsByCountry);
         List<Accomodations> returnedToViewRelevantAccomodations =  new ArrayList<>();
         Map<Double,Accomodations> costMap =  new HashMap<>();
         Roomtypes returndRoomtype= null;
@@ -179,6 +185,8 @@ public class CityService {
         List<Reservations_accomodations> reservations_accomodations =
                 reservationAccomodationRepository.findAll().stream()
                 .filter(e -> e.getUser().getId() == userId).collect(Collectors.toList());
+        System.out.println("Step 3");
+        System.out.println(reservations_accomodations);
         for(Reservations_accomodations r : reservations_accomodations){
             resAccIds.add(r.getAccomodation().getAccomodation_id());
         }
@@ -190,7 +198,8 @@ public class CityService {
 
         List<Accomodations> passedListAcc = accFilteredByHistory.size() == 0 ? relevantAccomodationsByCountry : accFilteredByHistory;
 
-
+        System.out.println("Step 4");
+        System.out.println(passedListAcc);
         for( Accomodations acc : passedListAcc){
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
             List<Reservations_accomodations> filteredRa =  buildMostImportantReservationsAccomodations(rezAcc, dateBegin,dateTo);
@@ -203,7 +212,8 @@ public class CityService {
            List<Roomtypes> specifiedRoomType =  acc.getRoomType().stream()
                    .filter(e -> e.getType().equals(roomType)).collect(Collectors.toList());
            returndRoomtype = specifiedRoomType.get(0);
-
+            System.out.println("Step 5");
+            System.out.println(specifiedRoomType);
             if(initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
 
 //                if(filteredRa.size() > 0) {
@@ -217,18 +227,26 @@ public class CityService {
             }
 
         }
+        System.out.println("Step 6");
+        System.out.println(costMap);
 
-        // TODO: RETURN DTO OBJECT FROM MINACCOMODATIONCOST
         if(returnedToViewRelevantAccomodations.size() > 0) {
             Accomodations minCostAcc = returnMinimumValueFromMapAcc(costMap);
             double cost = getMinCost(costMap);
             double remainedCost = budget - cost;
             List<Flights> flights =  flightsRepository.findAll();
 
+            System.out.println("Step 7");
+            System.out.println(flights);
+
             List<Flights> filteredFligthsFrom =  getFilterFlightsList(flights, departureCities, arrivalPassedCities);
             Flights relevantFromFlight;
+            System.out.println("Step 8");
+            System.out.println(filteredFligthsFrom);
             double remainedCostAfterFlightFrom = remainedCost;
             if(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost).size() > 0){
+                System.out.println("Step 9");
+                System.out.println(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost).size());
                  relevantFromFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
                  remainedCostAfterFlightFrom -= getMinCostFlights(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
             }else {
@@ -238,6 +256,8 @@ public class CityService {
             Flights relevantToFlight;
             List<Flights> filteredFligthsTo =  getFilterFlightsList(flights, arrivalPassedCities, departureCities);
             if(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCostAfterFlightFrom).size() > 0){
+                System.out.println("Step 10");
+                System.out.println(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCostAfterFlightFrom).size());
                  relevantToFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCostAfterFlightFrom));
             }else {
                 relevantToFlight = null;
@@ -246,11 +266,9 @@ public class CityService {
             returnedResult.setFlightFrom(relevantFromFlight);
             returnedResult.setFlightTo(relevantToFlight);
             returnedResult.setRoomtypes(returndRoomtype);
+            System.out.println("Step 11");
+            System.out.println(returnMinimumValueFromMapAcc(costMap));
         }
-
-        //TODO: CREATE SECOND FLIGHT
-
-
 
          return returnedResult;
     }

@@ -46,7 +46,7 @@ public class CityController {
         return cityService.getWishesByCountry(countryName, priece);
     }
 
-    @GetMapping(value = "/getParsedData")
+    @PostMapping(value = "/getParsedData")
     @ApiOperation(value = "${CityController.view}", response = FullReservationDTO.class)
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -63,10 +63,12 @@ public class CityController {
             @RequestParam int isBusiness,
             @RequestParam int numberOfRooms,
             @RequestParam String roomType,
-            @RequestParam int numberOfSeats
+            @RequestParam int numberOfSeats,
+            @RequestParam int userId,
+            @RequestBody List<String> wishes
             ) {
         return cityService.getParsedData(DepartureCountry, ArrivalCountry, BeginDate, EndDate,
-                budget, trackHistory, isBusiness, numberOfRooms, roomType,numberOfSeats);
+                budget, trackHistory, isBusiness, numberOfRooms, roomType,numberOfSeats,userId, wishes);
     }
 }
 

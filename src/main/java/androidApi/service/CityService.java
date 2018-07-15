@@ -5,10 +5,13 @@ import androidApi.model.*;
 import androidApi.repository.*;
 import com.sun.xml.internal.bind.v2.TODO;
 import io.swagger.models.auth.In;
+import org.apache.log4j.LogManager;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,16 +95,49 @@ public class CityService {
 
 
 
-    public FullReservationDTO getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats) {
-       return getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms, isBusiness, numberOfSeats);
+    public FullReservationDTO  getParsedData (String DepartureCountry, String ArrivalCountry, String BeginDate, String EndDate, double budget, int trackHistory, int isBusiness,int numberOfRooms, String roomType, int numberOfSeats,int userId, List<String>wishes) {
+       return getReservationAccomoodationForDTO(ArrivalCountry,DepartureCountry, BeginDate, EndDate, budget, roomType, numberOfRooms, isBusiness, numberOfSeats,userId, wishes, trackHistory);
 
     }
 
-    private FullReservationDTO getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry, String BeginDate, String EndDate, double budget, String roomType, int numberOfRooms, int isBussiness, int numberOfSeats) {
+    private List<Cities> getArrivalCitiesByWishes(List<String> wishes, List<Cities> arrivalCities){
+        List<Cities> filteredCities =  new ArrayList<>();
+        for(String wish : wishes){
+            for(Cities city : arrivalCities){
+                List<Wishes> cityWishes = city.getWishes();
+                 for(Wishes w : cityWishes){
+                    if( w.getWish_name().equals(wish)){
+                        filteredCities.add(city);
+                    }
+                }
+            }
+        }
+
+        return filteredCities;
+    }
+
+    private List<Accomodations> filterAccByHistory(List<Integer> ids, List<Accomodations> accomodations){
+        List<Accomodations> returnedAccomodations =  new ArrayList<>();
+            for(int id : ids){
+                for( Accomodations acc: accomodations){
+                    if(id != acc.getAccomodation_id()){
+                        returnedAccomodations.add(acc);
+                    }
+                }
+            }
+
+            return returnedAccomodations;
+    }
+
+    private FullReservationDTO getReservationAccomoodationForDTO(String ArrivalCountry, String DepartureCountry,
+                                                                 String BeginDate, String EndDate, double budget,
+                                                                 String roomType, int numberOfRooms, int isBussiness,
+                                                                 int numberOfSeats,int userId, List<String> wishes,
+                                                                 int trackHistory) {
 
         FullReservationDTO returnedResult = new FullReservationDTO();
-        BeginDate = "22/08/2018";
-        EndDate = "26/08/2018";
+//        BeginDate = "22/08/2018";
+//        EndDate = "26/08/2018";
 
         Countries departureCountries = countriesRepository.getCountryId(DepartureCountry);
         int departureCountryId =  departureCountries.getCountry_id();
@@ -115,9 +151,14 @@ public class CityService {
         List<Cities> arrivalCities = cityRepository.findAll().stream()
                 .filter(e -> e.getCountry().getCountry_id() == currentCountryId).collect(Collectors.toList());
 
+        //Filter arrivalCities by wishes
+       List<Cities> filteredCitiesByWishes =  getArrivalCitiesByWishes(wishes,arrivalCities);
+       if(filteredCitiesByWishes.size() > 0){
+           returnedResult.setWasFileterdByWishes(true);
+       }
 
-        List<Accomodations> accomodations = accomodationRepository.findAll().stream()
-                .filter(e -> checkCitiesElementInList(arrivalCities, e)).collect(Collectors.toList());
+
+       List<Cities> arrivalPassedCities = filteredCitiesByWishes.size() == 0 ? arrivalCities: filteredCitiesByWishes;
 
         Long dateBegin = parseToDateTime(BeginDate);
         Long dateTo = parseToDateTime(EndDate);
@@ -129,7 +170,7 @@ public class CityService {
         List<Accomodations> relevantAccomodations = accomodationRepository.getViewData();
         List<Accomodations> relevantAccomodationsByCountry =  new ArrayList<>();
 
-        for(Cities c: arrivalCities){
+        for(Cities c: arrivalPassedCities){
             for(Accomodations a: relevantAccomodations){
                 if(c.getCity_id()==a.getCity().getCity_id()){
                     relevantAccomodationsByCountry.add(a);
@@ -141,7 +182,24 @@ public class CityService {
         Map<Double,Accomodations> costMap =  new HashMap<>();
         Roomtypes returndRoomtype= null;
 
-        for( Accomodations acc : relevantAccomodationsByCountry){
+        //Track history
+        List<Integer> resAccIds = new ArrayList<>();
+        List<Reservations_accomodations> reservations_accomodations =
+                reservationAccomodationRepository.findAll().stream()
+                .filter(e -> e.getUser().getId() == userId).collect(Collectors.toList());
+        for(Reservations_accomodations r : reservations_accomodations){
+            resAccIds.add(r.getAccomodation().getAccomodation_id());
+        }
+
+        List<Accomodations> accFilteredByHistory =  new ArrayList<>();
+        if(trackHistory == 1){
+             accFilteredByHistory =  filterAccByHistory(resAccIds, relevantAccomodationsByCountry);
+        }
+
+        List<Accomodations> passedListAcc = accFilteredByHistory.size() == 0 ? relevantAccomodationsByCountry : accFilteredByHistory;
+
+
+        for( Accomodations acc : passedListAcc){
             List<Reservations_accomodations> rezAcc =  acc.getRezAccs();
             List<Reservations_accomodations> filteredRa =  buildMostImportantReservationsAccomodations(rezAcc, dateBegin,dateTo);
 
@@ -175,13 +233,23 @@ public class CityService {
             double remainedCost = budget - cost;
             List<Flights> flights =  flightsRepository.findAll();
 
-            List<Flights> filteredFligthsFrom =  getFilterFlightsList(flights, departureCities, arrivalCities);
-            Flights relevantFromFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
-            double remainedCostAfterFlightFrom = remainedCost - getMinCostFlights(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
+            List<Flights> filteredFligthsFrom =  getFilterFlightsList(flights, departureCities, arrivalPassedCities);
+            Flights relevantFromFlight;
+            double remainedCostAfterFlightFrom = remainedCost;
+            if(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost).size() > 0){
+                 relevantFromFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
+                 remainedCostAfterFlightFrom -= getMinCostFlights(getMostSignificantFlight(filteredFligthsFrom,isBussiness, numberOfSeats, dateTo, remainedCost));
+            }else {
+                relevantFromFlight = null;
+            }
 
-
-            List<Flights> filteredFligthsTo =  getFilterFlightsList(flights, arrivalCities, departureCities);
-            Flights relevantToFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCost));
+            Flights relevantToFlight;
+            List<Flights> filteredFligthsTo =  getFilterFlightsList(flights, arrivalPassedCities, departureCities);
+            if(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCostAfterFlightFrom).size() > 0){
+                 relevantToFlight = returnMinimumValueFromMapFlight(getMostSignificantFlight(filteredFligthsTo,isBussiness, numberOfSeats, dateBegin, remainedCostAfterFlightFrom));
+            }else {
+                relevantToFlight = null;
+            }
             returnedResult.setAccomodations(returnMinimumValueFromMapAcc(costMap));
             returnedResult.setFlightFrom(relevantFromFlight);
             returnedResult.setFlightTo(relevantToFlight);

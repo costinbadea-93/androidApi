@@ -85,4 +85,8 @@ public class ReservationService{
         }
         return 1;
     }
+
+    public void deleteReservation (int resId){
+         reservationAccomodationRepository.delete(resId);
+    }
 }

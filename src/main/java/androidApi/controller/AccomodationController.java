@@ -48,7 +48,8 @@ public class AccomodationController {
 
 
     @RequestMapping(value = "/addReservationAccomodation", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                        MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "${AccomodationController.addReservationAccomodation}", response = Accomodations.class)
     @ApiResponses(value = {//
@@ -76,7 +77,16 @@ public class AccomodationController {
         return reservationsAccomodations;
     }
 
-    
+    @DeleteMapping(value = "/deleteAccReservation")
+    @ApiOperation(value = "${AccomodationController.deleteAccReservation}", response = Reservations_accomodations.class)
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public void deleteReservationAcommodations(@RequestParam int resId) {
+        reservationService.deleteReservation(resId);
+    }
 }
 
 

@@ -3,10 +3,19 @@ package androidApi.dto;
 import androidApi.model.*;
 
 public class FullReservationDTO {
+    private boolean wasFileterdByWishes = false;
      private Accomodations accomodations;
      private Flights flightFrom;
      private Flights flightTo;
      private Roomtypes roomtypes;
+
+    public boolean isWasFileterdByWishes() {
+        return wasFileterdByWishes;
+    }
+
+    public void setWasFileterdByWishes(boolean wasFileterdByWishes) {
+        this.wasFileterdByWishes = wasFileterdByWishes;
+    }
 
     public Roomtypes getRoomtypes() {
         return roomtypes;

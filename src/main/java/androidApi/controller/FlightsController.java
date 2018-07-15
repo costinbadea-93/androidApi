@@ -53,6 +53,23 @@ public class FlightsController {
         Reservations_flights savedReservation =  reservationService.addResFlight(resFlight,flightId,userId);
         return ResponseEntity.ok().body(savedReservation.getFlight_reservation_id());
     }
+
+    @GetMapping(value = "/getParsedFlights")
+    @ApiOperation(value = "${FlightsController.getParsedFlights}", response = Flights.class)
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public List<Flights> getAllFlights(
+            @RequestParam String departureCountry,
+            @RequestParam String arrivalCountry,
+            @RequestParam String FlightDate,
+            @RequestParam int isBusiness,
+            @RequestParam int numberOfSeats
+    ) {
+        return flightsService.getFileteredFlights(departureCountry, arrivalCountry, FlightDate, isBusiness, numberOfSeats);
+    }
 }
 
 

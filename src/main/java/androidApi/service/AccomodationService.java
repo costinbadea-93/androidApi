@@ -29,8 +29,8 @@ public class AccomodationService {
         List<Accomodations> filteredAccListByCity = new ArrayList<>();
         List<Accomodations> returnedAcc = new ArrayList<>();
 
-        d1 = "22/08/2018";
-        d2 = "26/08/2018";
+//        d1 = "22/08/2018";
+//        d2 = "26/08/2018";
 
         Long dateBegin = parseToDateTime(d1);
         Long dateTo = parseToDateTime(d2);
@@ -45,6 +45,7 @@ public class AccomodationService {
 
         for (Accomodations acc : filteredAccListByCity) {
             List<Reservations_accomodations> rezAcc = acc.getRezAccs();
+
             List<Reservations_accomodations> filteredRa = buildMostImportantReservationsAccomodations(rezAcc, dateBegin, dateTo);
             int initalSumCount = 0;
             for (Reservations_accomodations rez : filteredRa) {
@@ -54,6 +55,11 @@ public class AccomodationService {
             List<Roomtypes> specifiedRoomType = acc.getRoomType().stream()
                     .filter(e -> e.getType().equals(roomType)).collect(Collectors.toList());
             if (initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
+
+                if(rezAcc.size() == 0) {
+                    returnedAcc.add(acc);
+                }
+
                 if (filteredRa.size() > 0) {
                     returnedAcc.add(acc);
                 }

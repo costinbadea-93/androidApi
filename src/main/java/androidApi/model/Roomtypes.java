@@ -18,6 +18,9 @@ public class Roomtypes {
     private int balcony;
     private int internet_cable;
 
+    public Accomodations getAccomodation() {
+        return accomodation;
+    }
 //    public List<Accomodations> getRoomsType() {
 //        return roomsType;
 //    }

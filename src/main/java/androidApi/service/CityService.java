@@ -233,7 +233,7 @@ public class CityService {
         return flightsMap;
     }
 
-    private List<Flights> getFilterFlightsList(List<Flights> flights, List<Cities> arrivalCities,List<Cities> departureCities) {
+    public List<Flights> getFilterFlightsList(List<Flights> flights, List<Cities> arrivalCities,List<Cities> departureCities) {
         List<Flights> returnedFlightsList =  new ArrayList<>();
         for(Flights f : flights){
             for(Cities ca : arrivalCities) {
@@ -248,7 +248,7 @@ public class CityService {
         }
         return returnedFlightsList;
     }
-    private List<Reservations_accomodations> buildMostImportantReservationsAccomodations(List<Reservations_accomodations> accomodations, long dateBegin, long dateTo){
+    public List<Reservations_accomodations> buildMostImportantReservationsAccomodations(List<Reservations_accomodations> accomodations, long dateBegin, long dateTo){
         List<Reservations_accomodations> filteredRa = new ArrayList<>();
                     for (Reservations_accomodations rez: accomodations) {
                     if((parseToDateTime(rez.getBegin_time()) >= dateBegin && parseToDateTime(rez.getEnd_time()) >= dateBegin && parseToDateTime(rez.getBegin_time()) <= dateTo &&
@@ -294,7 +294,7 @@ public class CityService {
         return localDate;
     }
 
-    private long parseToDateTime(String date) {
+    public long parseToDateTime(String date) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return df.parse(date).getTime();

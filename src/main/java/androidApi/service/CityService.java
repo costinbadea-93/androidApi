@@ -434,14 +434,17 @@ public class CityService {
     private double getMinCostFlights(Map<Double,Flights> map) {
         System.out.println("Cost min");
         System.out.println(map);
-        Map.Entry<Double, Flights> minFlightsCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
-            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
-                return entry1.getKey().compareTo(entry2.getKey());
-            }
-        });
+//        Map.Entry<Double, Flights> minFlightsCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
+//            public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
+//                return entry1.getKey().compareTo(entry2.getKey());
+//            }
+//        });
         System.out.println("Cost min taken");
-        System.out.println(minFlightsCost.getKey());
-        return minFlightsCost.getKey();
+        System.out.println(map);
+        Map.Entry<Double,Flights> entry = map.entrySet().iterator().next();
+        System.out.println("take first element");
+        System.out.println(entry.getKey());
+        return entry.getKey();
     }
 
 }

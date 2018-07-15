@@ -270,6 +270,8 @@ public class CityService {
             System.out.println(returnMinimumValueFromMapAcc(costMap));
         }
 
+        System.out.println("Step 16");
+        System.out.println(returnedResult);
          return returnedResult;
     }
 

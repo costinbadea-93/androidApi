@@ -393,15 +393,16 @@ public class CityService {
         return 1;
     }
     private Accomodations returnMinimumValueFromMapAcc(Map<Double,Accomodations> map) {
+        System.out.println("FINDED ERROR");
+        System.out.println(map);
         Map.Entry<Double, Accomodations> minAccomodationCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Accomodations>>() {
             public int compare(Map.Entry<Double, Accomodations> entry1, Map.Entry<Double, Accomodations> entry2) {
                 return entry1.getKey().compareTo(entry2.getKey());
             }
         });
-
-        System.out.println("FINDED ERROR");
+        System.out.println("FINDED ERROR2");
         System.out.println(minAccomodationCost.getValue());
-        System.out.println(map);
+
         return minAccomodationCost.getValue();
     }
 

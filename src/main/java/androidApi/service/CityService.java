@@ -268,6 +268,8 @@ public class CityService {
             returnedResult.setRoomtypes(returndRoomtype);
             System.out.println("Step 11");
             System.out.println(returnMinimumValueFromMapAcc(costMap));
+            System.out.println("Step 17");
+            System.out.println(returnedResult);
         }
 
         System.out.println("Step 16");

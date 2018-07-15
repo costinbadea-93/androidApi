@@ -326,6 +326,7 @@ public class CityService {
 
     public List<Flights> getFilterFlightsList(List<Flights> flights, List<Cities> arrivalCities,List<Cities> departureCities) {
         List<Flights> returnedFlightsList =  new ArrayList<>();
+        System.out.println("before returned Fllights list");
         for(Flights f : flights){
             for(Cities ca : arrivalCities) {
                 for(Cities dc: departureCities){
@@ -337,6 +338,8 @@ public class CityService {
                 }
             }
         }
+        System.out.println("returned Fllights list");
+        System.out.println(returnedFlightsList);
         return returnedFlightsList;
     }
     public List<Reservations_accomodations> buildMostImportantReservationsAccomodations(List<Reservations_accomodations> accomodations, long dateBegin, long dateTo){
@@ -436,6 +439,8 @@ public class CityService {
                 return entry1.getKey().compareTo(entry2.getKey());
             }
         });
+        System.out.println("Cost min taken");
+        System.out.println(minFlightsCost.getKey());
         return minFlightsCost.getKey();
     }
 

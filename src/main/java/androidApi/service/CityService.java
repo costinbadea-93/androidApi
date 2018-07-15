@@ -276,7 +276,8 @@ public class CityService {
     private Map<Double,Flights> getMostSignificantFlight(List<Flights> flightsList, int isBusiness, int numberOfSeats, long dateBegin, double remainedCost){
         List<Flights> availableFlights = new ArrayList<>();
         Map<Double, Flights> flightsMap = new HashMap<>();
-
+        System.out.println("Step 11");
+        System.out.println(flightsList);
         for(Flights f : flightsList) {
             //Filter by date and category of seats
             int numberOfTakenSeats = 0;
@@ -307,6 +308,12 @@ public class CityService {
             }
 
         }
+
+        System.out.println("Step 12");
+        System.out.println(flightsMap);
+
+        System.out.println("Step 13");
+        System.out.println(availableFlights);
         //
         return flightsMap;
     }

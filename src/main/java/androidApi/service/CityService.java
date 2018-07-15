@@ -262,11 +262,13 @@ public class CityService {
             }else {
                 relevantToFlight = null;
             }
+            System.out.println("Step 19");
+            System.out.println(returnMinimumValueFromMapAcc(costMap));
             returnedResult.setAccomodations(returnMinimumValueFromMapAcc(costMap));
             returnedResult.setFlightFrom(relevantFromFlight);
             returnedResult.setFlightTo(relevantToFlight);
             returnedResult.setRoomtypes(returndRoomtype);
-            System.out.println("Step 11");
+            System.out.println("Step 18");
             System.out.println(returnMinimumValueFromMapAcc(costMap));
             System.out.println("Step 17");
             System.out.println(returnedResult);
@@ -427,6 +429,8 @@ public class CityService {
     }
 
     private double getMinCostFlights(Map<Double,Flights> map) {
+        System.out.println("Cost min");
+        System.out.println(map);
         Map.Entry<Double, Flights> minFlightsCost = Collections.min(map.entrySet(), new Comparator<Map.Entry<Double, Flights>>() {
             public int compare(Map.Entry<Double, Flights> entry1, Map.Entry<Double, Flights> entry2) {
                 return entry1.getKey().compareTo(entry2.getKey());

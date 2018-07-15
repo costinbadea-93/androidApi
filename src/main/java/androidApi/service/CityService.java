@@ -3,23 +3,15 @@ package androidApi.service;
 import androidApi.dto.FullReservationDTO;
 import androidApi.model.*;
 import androidApi.repository.*;
-import com.sun.xml.internal.bind.v2.TODO;
-import io.swagger.models.auth.In;
-import org.apache.log4j.LogManager;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service

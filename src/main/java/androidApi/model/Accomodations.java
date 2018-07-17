@@ -33,7 +33,6 @@ public class Accomodations {
     @OneToMany(mappedBy = "accomodation")
     private List<Reservations_accomodations> rezAccs;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "accomodation")
     private List<Roomtypes> roomType;
 

@@ -57,10 +57,12 @@ public class AccomodationService {
             if (initalSumCount < specifiedRoomType.get(0).getNumber_of_rooms()) {
 
                 if(rezAcc.size() == 0) {
+                    acc.setRoomType(acc.getRoomType().stream().filter(e -> e.getType().equals(roomType)).collect(Collectors.toList()));
                     returnedAcc.add(acc);
                 }
 
                 if (filteredRa.size() > 0) {
+                    acc.setRoomType(acc.getRoomType().stream().filter(e -> e.getType().equals(roomType)).collect(Collectors.toList()));
                     returnedAcc.add(acc);
                 }
             }

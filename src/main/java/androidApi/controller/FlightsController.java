@@ -70,6 +70,17 @@ public class FlightsController {
     ) {
         return flightsService.getFileteredFlights(departureCountry, arrivalCountry, FlightDate, isBusiness, numberOfSeats);
     }
+
+    @DeleteMapping(value = "/deleteReservationFlights")
+    @ApiOperation(value = "${AccomodationController.deleteReservationFlights}", response = Reservations_flights.class)
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public void deleteReservationFlight(@RequestParam int flightId) {
+        flightsService.deleteFlight(flightId);
+    }
 }
 
 

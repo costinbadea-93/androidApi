@@ -1,10 +1,7 @@
 package androidApi.service;
 
 import androidApi.model.*;
-import androidApi.repository.AccomodationRepository;
-import androidApi.repository.CityRepository;
-import androidApi.repository.CountriesRepository;
-import androidApi.repository.FlightsRepository;
+import androidApi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +24,9 @@ public class FlightsService {
 
     @Autowired
     CityService cityService;
+
+    @Autowired
+    ReservationFligthRepository reservationFligthRepository;
 
     public List<Flights> getFlights() {
         return flightsRepository.findAll();
@@ -92,5 +92,10 @@ public class FlightsService {
             }
         }
         return availableFlights;
+    }
+
+    public void deleteFlight(int flightId){
+        Reservations_flights fl = reservationFligthRepository.findOne(flightId);
+        reservationFligthRepository.delete(fl);
     }
 }

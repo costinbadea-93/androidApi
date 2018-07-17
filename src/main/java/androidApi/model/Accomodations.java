@@ -30,10 +30,10 @@ public class Accomodations {
     private Cities city;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "accomodation")
+    @OneToMany(mappedBy = "accomodation", cascade = CascadeType.ALL)
     private List<Reservations_accomodations> rezAccs;
 
-    @OneToMany(mappedBy = "accomodation")
+    @OneToMany(mappedBy = "accomodation",cascade = CascadeType.ALL)
     private List<Roomtypes> roomType;
 
     public List<Reservations_accomodations> getRezAccs() {

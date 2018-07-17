@@ -20,11 +20,11 @@ public class Reservations_accomodations {
     private int no_of_rooms;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Accomodations accomodation;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User user;
 
     public void setBegin_time(String begin_time) {

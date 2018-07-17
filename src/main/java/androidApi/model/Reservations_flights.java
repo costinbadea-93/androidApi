@@ -13,10 +13,10 @@ public class Reservations_flights {
     private int numberOfSeats;
     private int isBusiness;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Flights flight;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User user;
 
     public int getFlight_reservation_id() {

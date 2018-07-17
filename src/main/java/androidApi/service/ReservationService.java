@@ -87,6 +87,7 @@ public class ReservationService{
     }
 
     public void deleteReservation (int resId){
-         reservationAccomodationRepository.delete(resId);
+        Reservations_accomodations ra =  reservationAccomodationRepository.findOne(resId);
+        reservationAccomodationRepository.delete(ra);
     }
 }

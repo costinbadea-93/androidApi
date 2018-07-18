@@ -19,7 +19,7 @@ public class Reservations_accomodations {
     private String roomtype;
     private int no_of_rooms;
 
-    @JsonIgnore
+
     @ManyToOne
     private Accomodations accomodation;
 

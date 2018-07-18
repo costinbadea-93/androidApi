@@ -59,14 +59,20 @@ public class ReservationService{
         List<Reservations_flights> reservations_flights =  reservationFligthRepository.findAll();
         List<ItineraryDTO> itineraryDTOSList = new ArrayList<>();
         for (Reservations_accomodations resA: reservationsAcc){
+            boolean flag = true;
+            ItineraryDTO itineraryDTO = new ItineraryDTO();
+            itineraryDTO.setReservations_accomodations(resA);
             for (Reservations_flights resF: reservations_flights) {
-                if (parseToDateTime(resA.getBegin_time()) == parseToDateTime(resF.getFlight_date()) ||
-                        parseToDateTime(resA.getBegin_time()) == parseToDateTime(resF.getFlight_date())){
-                    ItineraryDTO itineraryDTO = new ItineraryDTO();
-                    itineraryDTO.setReservations_accomodations(resA);
-                    itineraryDTO.setReservations_flights(resF);
-                    itineraryDTOSList.add(itineraryDTO);
+                if (parseToDateTime(resA.getBegin_time()) == parseToDateTime(resF.getFlight_date())){
+                    itineraryDTO.setReservations_flights_to(resF);
+                   // itineraryDTOSList.add(itineraryDTO);
+                }else if(parseToDateTime(resA.getEnd_time()) == parseToDateTime(resF.getFlight_date())){
+                    itineraryDTO.setReservations_flights_from(resF);
                 }
+            }
+            if(flag && itineraryDTOSList.size() < 1 && (itineraryDTO.getReservations_flights_to() != null || itineraryDTO.getReservations_flights_from()!= null)){
+                itineraryDTOSList.add(itineraryDTO);
+                flag = false;
             }
         }
         getReservationsDTOS.setReservationsAccomodations(reservationsAcc);

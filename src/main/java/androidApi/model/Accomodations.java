@@ -36,6 +36,7 @@ public class Accomodations {
     @OneToMany(mappedBy = "accomodation",cascade = CascadeType.ALL)
     private List<Roomtypes> roomType;
 
+    @JsonIgnore
     public List<Reservations_accomodations> getRezAccs() {
         return rezAccs;
     }

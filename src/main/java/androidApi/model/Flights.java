@@ -36,6 +36,7 @@ public class Flights {
     @OneToMany(mappedBy = "flight")
     private List<Reservations_flights> rezFligh;
 
+    @JsonIgnore
     public List<Reservations_flights> getRezFligh() {
         return rezFligh;
     }

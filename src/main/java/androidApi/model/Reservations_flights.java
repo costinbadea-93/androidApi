@@ -15,7 +15,6 @@ public class Reservations_flights {
     private int numberOfSeats;
     private int isBusiness;
 
-    @JsonIgnore
     @ManyToOne
     private Flights flight;
 

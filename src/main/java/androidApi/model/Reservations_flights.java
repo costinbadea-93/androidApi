@@ -1,5 +1,7 @@
 package androidApi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,9 +15,11 @@ public class Reservations_flights {
     private int numberOfSeats;
     private int isBusiness;
 
+    @JsonIgnore
     @ManyToOne
     private Flights flight;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
